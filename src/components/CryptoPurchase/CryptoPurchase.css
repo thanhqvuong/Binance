@@ -1,0 +1,123 @@
+:root {
+  --bg-color-light: #f4f7fc;
+  --text-color-light: #222;
+  --card-bg-light: #ffffff;
+  --shadow-light: rgba(0, 0, 0, 0.1);
+
+  --bg-color-dark: #1a1a2e;
+  --text-color-dark: #e0e0e0;
+  --card-bg-dark: #16213e;
+  --shadow-dark: rgba(255, 255, 255, 0.15);
+}
+
+body.light-mode {
+  background: var(--bg-color-light);
+  color: var(--text-color-light);
+}
+
+body.dark-mode {
+  background: var(--bg-color-dark);
+  color: var(--text-color-dark);
+}
+
+/* Container chính */
+.crypto-container {
+  text-align: center;
+  font-family: "Arial", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Tiêu đề */
+.crypto-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: inherit;
+  margin-bottom: 5px;
+}
+
+/* Wrapper chứa cả CryptoTrade và CryptoPurchase */
+.crypto-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Wrapper của các bước */
+.crypto-steps {
+  display: flex;
+  justify-content: center;
+  gap: 50px; /* Tăng khoảng cách giữa các bước */
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+/* Mỗi bước */
+.crypto-step {
+  background: var(--card-bg-light);
+  border-radius: 12px;
+  padding: 18px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0 4px 8px var(--shadow-light);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  margin: 0;
+}
+
+.dark-mode .crypto-step {
+  background: var(--card-bg-dark);
+  box-shadow: 0 4px 12px var(--shadow-dark);
+}
+
+.crypto-step:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px var(--shadow-light);
+}
+
+.dark-mode .crypto-step:hover {
+  box-shadow: 0 6px 14px var(--shadow-dark);
+}
+
+/* Tiêu đề nhỏ trong mỗi bước */
+.crypto-step h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: inherit;
+  margin-top: 8px;
+}
+
+/* Đoạn văn mô tả */
+.crypto-step p {
+  font-size: 14px;
+  color: inherit;
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
+/* Icon của từng bước */
+.crypto-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffcc00;
+  border-radius: 50%;
+  margin: 0 auto 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+}
+
+/* Chế độ dark mode */
+.dark-mode .crypto-icon {
+  background: #ffaa00;
+  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .crypto-icon:hover {
+  background: #ffbb33;
+}

@@ -1,0 +1,24 @@
+/* 🌞 Light Mode */
+:root {
+  --background-color: #ffffff;
+  --text-color: #222;
+}
+
+/* 🌙 Dark Mode */
+.dark-mode {
+  --background-color: #181a20;
+  --text-color: #ffffff;
+}
+
+/* 🌍 Áp dụng theme toàn bộ app */
+body, #root {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

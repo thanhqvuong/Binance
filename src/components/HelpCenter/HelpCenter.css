@@ -1,0 +1,105 @@
+:root {
+    --bg-light: #ffffff;
+    --text-light: #181a20;
+    --bg-dark: #181a20;
+    --text-dark: #eaecef;
+    --border-light: #eaecef;
+    --border-dark: #35383f;
+  }
+  
+  body {
+    background: var(--bg-light);
+    color: var(--text-light);
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  
+  .dark-mode body {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+  }
+  
+  .help-center {
+    max-width: 800px;
+    margin: auto;
+    background: var(--bg-light);
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .dark-mode .help-center {
+    background: var(--bg-dark);
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--text-light);
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .dark-mode .title {
+    color: var(--text-dark);
+  }
+  
+  .help-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .help-item {
+    background: var(--bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, border 0.3s ease-in-out;
+  }
+  
+  .help-item.open {
+    background: #f5f5f5;
+  }
+  
+  .dark-mode .help-item {
+    background: var(--bg-dark);
+    border: 1px solid var(--border-dark);
+  }
+  
+  .dark-mode .help-item.open {
+    background: #22252b;
+  }
+  
+  .help-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    color: var(--text-light);
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .dark-mode .help-header {
+    color: var(--text-dark);
+  }
+  
+  .help-icon {
+    font-size: 20px;
+    color: #8b8b8b;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .dark-mode .help-icon {
+    color: #c5c5c5;
+  }
+  
+  .help-answer {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .dark-mode .help-answer {
+    color: #b0b3b8;
+  }

@@ -1,0 +1,55 @@
+.trade-history {
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .trade-history h3 {
+    text-align: center;
+    color: var(--text-color);
+  }
+  
+  .trade-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .trade-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  
+  .trade-item.buy {
+    background-color: rgba(22, 199, 132, 0.2);
+    color: #16c784;
+  }
+  
+  .trade-item.sell {
+    background-color: rgba(234, 57, 67, 0.2);
+    color: #ea3943;
+  }
+  
+  .time, .price, .amount {
+    font-size: 14px;
+  }
+  
+  /* Light/Dark Mode Variables */
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-color: #121212;
+      --text-color: #ffffff;
+    }
+  }
+  

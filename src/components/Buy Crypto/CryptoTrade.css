@@ -1,0 +1,163 @@
+/* ========== GLOBAL STYLES ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #fff;
+    --card-bg: #1e1e1e;
+    --card-shadow: rgba(255, 255, 255, 0.1);
+    --tab-inactive: #333;
+    --tab-active: #ffd700;
+    --input-bg: #2b2b2b;
+    --disabled-bg: #666;
+    --error-color: #ff6666;
+}
+
+/* ========== CONTAINER CHÍNH ========== */
+.crypto-trade-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: var(--bg-color);
+    color: var(--text-color);
+    padding: 40px;
+    margin-bottom: 0;
+}
+
+/* ========== BÊN TRÁI: THÔNG TIN COIN ========== */
+.crypto-trade-info {
+    flex: 1;
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 5px 10px var(--card-shadow);
+    margin-right: 20px;
+}
+
+.crypto-trade-info h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--tab-active);
+    margin-bottom: 20px;
+}
+
+.crypto-list h2 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.crypto-list ul {
+    list-style: none;
+}
+
+.crypto-list li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+}
+
+.crypto-list li:last-child {
+    border-bottom: none;
+}
+
+.crypto-list .negative {
+    color: var(--error-color);
+    font-weight: bold;
+}
+
+/* ========== BÊN PHẢI: GIAO DỊCH MUA/BÁN ========== */
+.exchange-section {
+    flex: 1;
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 5px 10px var(--card-shadow);
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    width: 50%;
+    padding: 12px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+    background: var(--tab-inactive);
+    color: var(--text-color);
+}
+
+.tabs .active {
+    background: var(--tab-active);
+    font-weight: bold;
+    color: #000;
+}
+
+/* Box nhập liệu */
+.exchange-box {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    background: var(--input-bg);
+    padding: 12px;
+    border-radius: 5px;
+}
+
+.input-group input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: var(--text-color);
+    outline: none;
+    padding: 5px;
+    text-align: right;
+}
+
+.input-group span {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Nút giao dịch */
+.submit-btn {
+    width: 100%;
+    background: var(--tab-active);
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    color: #000;
+}
+
+.submit-btn:disabled {
+    background: var(--disabled-bg);
+    cursor: not-allowed;
+}
+
+/* Thông báo lỗi */
+.error-message {
+    color: var(--error-color);
+    font-size: 16px;
+    font-weight: bold;
+}

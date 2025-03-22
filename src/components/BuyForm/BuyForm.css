@@ -1,0 +1,79 @@
+:root {
+    --primary-color: #f0b90b;
+    --background-light: #ffffff;
+    --background-dark: #181a20;
+    --text-light: #000000;
+    --text-dark: #eaecef;
+    --border-radius: 6px;
+    --radio-size: 16px;
+  }
+  
+  body.light-mode {
+    background-color: var(--background-light);
+    color: var(--text-light);
+  }
+  
+  body.dark-mode {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+  }
+  
+  .buy-form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    background-color: rgba(255, 255, 255, 0.1);
+    text-align: center;
+  }
+  
+  .buy-form h2 {
+    color: var(--primary-color);
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    background-color: transparent;
+    color: inherit;
+  }
+  
+  .error {
+    color: red;
+  }
+  
+  .success {
+    color: green;
+  }
+  
+  .subscription-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 5px 0;
+  }
+  
+  .radio-small {
+    width: var(--radio-size);
+    height: var(--radio-size);
+    accent-color: var(--primary-color);
+  }
+  
+  .deposit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 16px;
+    color: #000;
+  }
+  
+  .deposit-button:hover {
+    background-color: #d89e00;
+  }
+  

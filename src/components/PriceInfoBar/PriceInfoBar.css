@@ -1,0 +1,56 @@
+/* Light/Dark Mode Styles */
+:root {
+    --bg-light: #ffffff;
+    --text-light: #000000;
+    --bg-dark: #121212;
+    --text-dark: #ffffff;
+    --green: #16c784;
+    --red: #ea3943;
+  }
+  
+  body.light-mode {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+  
+  body.dark-mode {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+  
+  .price-info-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .light-mode .price-info-bar {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+  
+  .dark-mode .price-info-bar {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+  
+  .price-usdt {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  
+  .price-vnd {
+    font-size: 0.9em;
+    color: gray;
+  }
+  
+  .price-up {
+    color: var(--green);
+  }
+  
+  .price-down {
+    color: var(--red);
+  }
+  

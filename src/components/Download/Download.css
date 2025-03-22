@@ -1,0 +1,143 @@
+/* 🌞 Light Mode (default) */
+:root {
+  --background-color: #ffffff;
+  --border-color: #ddd;
+  --text-color: #333;
+  --highlight-color: #f0b90b;
+  --placeholder-color: #999;
+  --button-bg: #f0b90b;
+  --button-text: #000;
+  --link-color: #0000EE;
+}
+
+/* 🌙 Dark Mode */
+.dark-mode {
+  --background-color: #181a20 !important;
+  --border-color: #333;
+  --text-color: #ffffff !important;
+  --highlight-color: #f0b90b;
+  --placeholder-color: #aaa;
+  --button-bg: #f0b90b;
+  --button-text: #000;
+  --link-color: #FFD700;
+}
+
+/* General Styles */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif; /* Added for better readability */
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--link-color); /* Apply link color */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline; /* Adds hover effect to links */
+}
+
+/* Download Section */
+.download-section {
+  padding: 40px;
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* Added for responsiveness */
+}
+
+.download-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+}
+
+.phone-mockup {
+  flex: 1 1 50%; /* Added flex shorthand */
+  text-align: center;
+}
+
+.phone-mockup img {
+  width: 100%;
+  max-width: 600px;
+  object-fit: contain;
+  height: 500px;
+}
+
+.download-content {
+  flex: 1 1 50%; /* Added flex shorthand */
+  text-align: center;
+}
+
+.download-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 20px;
+}
+
+.qr-code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-code img {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+}
+
+.qr-code h1,
+.qr-code h2,
+.qr-code h3 {
+  font-weight: bold;
+  color: var(--text-color);
+  margin: 10px 0;
+}
+
+.qr-code button {
+  width: 200px;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  transition: background-color 0.3s ease; /* Added transition for smooth hover effect */
+}
+
+.qr-code button:hover {
+  background-color: var(--highlight-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .download-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .phone-mockup,
+  .download-content {
+    flex: 1 1 100%; /* Ensures the content fills the screen properly */
+    max-width: 100%;
+  }
+
+  .phone-mockup img {
+    height: auto; /* Makes the image responsive */
+  }
+
+  .qr-code button {
+    width: 100%; /* Makes the button responsive */
+  }
+}

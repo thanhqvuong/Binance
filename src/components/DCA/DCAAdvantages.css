@@ -1,0 +1,95 @@
+/* 🌍 Global styles for the advantages section */
+.dca-advantages {
+    text-align: center;
+    padding: 50px 20px;
+    background: var(--bg-color);
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.dca-advantages h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: var(--text-color);
+}
+
+/* 📦 Grid layout for the cards */
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 🎴 Individual advantage cards */
+.advantage-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
+}
+
+.advantage-card:hover {
+    transform: translateY(-5px);
+}
+
+/* 🏷️ Title in each card */
+.advantage-card h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* 📄 Description text */
+.advantage-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* 📱 Responsive styles */
+@media (max-width: 1024px) {
+    .advantages-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .advantages-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .dca-advantages h2 {
+        font-size: 24px;
+    }
+}
+
+/* 🎨 Light & Dark Mode Variables */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #222;
+    --text-muted: #555;
+    --card-bg: #f8f8f8;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #0b0e11;
+        --text-color: #fff;
+        --text-muted: #ccc;
+        --card-bg: #1a1d21;
+    }
+}
+
+/* 🌑 Manual Dark Mode Toggle */
+.dark-mode {
+    --bg-color: #0b0e11;
+    --text-color: #fff;
+    --text-muted: #ccc;
+    --card-bg: #1a1d21;
+}

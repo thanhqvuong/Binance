@@ -1,0 +1,111 @@
+/* 🌍 Global styles for the chart container */
+.price-chart {
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 600px;
+  margin: 20px auto;
+  transition: all 0.3s ease-in-out;
+}
+
+/* 🌓 Light Mode */
+html[data-theme="light"] .price-chart {
+  background: #ffffff;
+  color: #222;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 🌙 Dark Mode */
+html[data-theme="dark"] .price-chart {
+  background: #0b0e11;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* 🏷️ Title styles */
+.price-chart h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/* 🎨 Light Mode Title */
+html[data-theme="light"] .price-chart h2 {
+  color: #d49f00;
+}
+
+/* 🌙 Dark Mode Title */
+html[data-theme="dark"] .price-chart h2 {
+  color: #fcb900;
+}
+
+/* 💰 Price info */
+.price-chart p {
+  margin: 5px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 📈 Percentage change */
+.price-change {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 🏷️ Legend */
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* 🎨 Legend items */
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* 🔵 Color circles */
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* 💛 VND color */
+.vnd-color {
+  background: #fcb900;
+}
+
+/* 💚 USDT color */
+.usdt-color {
+  background: #0ecb81;
+}
+
+/* 📱 Responsive design */
+@media (max-width: 768px) {
+  .price-chart {
+      width: 90%;
+      padding: 15px;
+  }
+
+  h2 {
+      font-size: 18px;
+  }
+
+  p {
+      font-size: 16px;
+  }
+
+  .legend {
+      font-size: 12px;
+  }
+}

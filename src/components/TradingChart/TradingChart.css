@@ -1,0 +1,49 @@
+/* Light/Dark Mode Styles */
+:root {
+    --bg-light: #ffffff;
+    --text-light: #000000;
+    --bg-dark: #121212;
+    --text-dark: #ffffff;
+    --green: #16c784;
+    --red: #ea3943;
+    --yellow: #f4c542;
+  }
+  
+  body.light-mode {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+  
+  body.dark-mode {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+  
+  .trading-chart {
+    padding: 10px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .light-mode .trading-chart {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+  
+  .dark-mode .trading-chart {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+  
+  /* Màu cột dựa vào giá thay đổi */
+  .bar-up {
+    fill: var(--green);
+  }
+  
+  .bar-down {
+    fill: var(--red);
+  }
+  
+  .bar-neutral {
+    fill: var(--yellow);
+  }
+  

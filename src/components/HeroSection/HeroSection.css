@@ -1,0 +1,242 @@
+/* 🌞 Light Mode */
+.light-mode {
+  --background-color: #ffffff;
+  --text-color: #000000; /* Màu chữ đen cho chế độ sáng */
+  --highlight-color: #fcd535; /* Màu vàng cho các thành phần như coin-name */
+  --button-bg: #fcd535; /* Nền vàng cho các nút */
+  --button-text-color: #000000; /* Chữ đen */
+  --button-hover-bg: #e5b800;
+  --border-color: #ddd;
+  --input-bg: #f0f0f0;
+  --placeholder-color: #aaa;
+  --coin-value-color: #333; /* Màu giá trị coin cho chế độ sáng */
+  --title-color: #ffffff; /* Tiêu đề có màu trắng trong light mode */
+}
+
+/* 🌙 Dark Mode */
+.dark-mode {
+  --background-color: #181a20;
+  --text-color: #ffffff; /* Màu chữ trắng */
+  --highlight-color: #fcd535; /* Màu vàng cho các thành phần như coin-name */
+  --button-bg: #fcd535; /* Nền vàng cho các nút */
+  --button-text-color: #000000; /* Chữ đen */
+  --button-hover-bg: #e5b800;
+  --border-color: #555;
+  --input-bg: #333;
+  --placeholder-color: #bbb;
+  --coin-value-color: #d1d1d1; /* Màu sáng cho giá trị coin trong dark mode */
+  --title-color: #fcd535; /* Tiêu đề có màu vàng trong dark mode */
+}
+
+/* Hero Section */
+.hero-section {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 50px 20px;
+}
+
+.hero-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.hero-left {
+  flex: 1;
+  padding-right: 50px;
+}
+
+.hero-left h1 {
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--title-color); /* Tiêu đề màu trắng trong light mode, vàng trong dark mode */
+  margin-bottom: 10px;
+}
+
+.hero-left p {
+  font-size: 18px;
+  color: var(--text-color);
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+/* Input Field */
+.hero-input {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.hero-input-field {
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  flex: 1;
+  font-size: 16px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  width: 300px;
+}
+
+.hero-input-field::placeholder {
+  color: var(--placeholder-color);
+}
+
+.hero-button {
+  padding: 14px 20px;
+  background-color: var(--button-bg);
+  color: var(--button-text-color);
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  border: none;
+}
+
+.hero-button:hover {
+  background-color: var(--button-hover-bg);
+}
+
+/* Hero Right Section */
+.hero-right {
+  flex: 1;
+  min-width: 500px;
+}
+
+/* Market News */
+.market-news-container {
+  background-color: var(--background-color);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+/* Toggle Buttons */
+.toggle-buttons {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.toggle-button {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 15px;
+  font-size: 16px;
+  background: var(--highlight-color); /* Nền vàng */
+  border: none;
+  color: var(--button-text-color); /* Chữ đen */
+  transition: 0.3s;
+  position: relative;
+}
+
+.toggle-button.active {
+  font-weight: bold;
+}
+
+.toggle-button.active::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--button-bg);
+  transition: 0.3s;
+}
+
+/* Market List */
+.market-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.market-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.coin-name {
+  font-weight: bold;
+  color: var(--highlight-color); /* Chữ vàng cho tên coin */
+}
+
+.coin-value {
+  color: var(--coin-value-color); /* Màu sáng cho giá trị coin trong cả chế độ sáng và tối */
+}
+
+.coin-change.positive {
+  color: #0ecb81; /* Màu xanh cho giá trị tích cực */
+}
+
+.coin-change.negative {
+  color: #f6465d; /* Màu đỏ cho giá trị tiêu cực */
+}
+
+/* News Section */
+.news-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--title-color); /* Tiêu đề có màu vàng trong dark mode, trắng trong light mode */
+}
+
+.news-list {
+  list-style: none;
+  padding: 0;
+}
+
+.news-list li {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: var(--news-text-color); /* Màu chữ cho tin tức */
+}
+
+/* Thêm các quy định cho light mode và dark mode */
+.light-mode .news-list li {
+  color: #000000; /* Chữ đen cho chế độ sáng */
+}
+
+.dark-mode .news-list li {
+  color: #d1d1d1; /* Chữ xám trắng cho chế độ tối */
+}
+
+/* Link Styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  color: var(--highlight-color);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .hero-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-left {
+    padding-right: 0;
+    text-align: center;
+  }
+
+  .hero-right {
+    min-width: 100%;
+    margin-top: 30px;
+  }
+
+  .hero-input {
+    justify-content: center;
+  }
+}

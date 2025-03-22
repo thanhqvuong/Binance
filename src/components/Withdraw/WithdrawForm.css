@@ -1,0 +1,82 @@
+:root {
+    --bg-light: #ffffff;
+    --text-light: #181a20;
+    --bg-dark: #181a20;
+    --text-dark: #eaecef;
+    --button-light: #fcd535;
+    --button-dark: #f8b500;
+}
+
+.withdraw-container {
+    max-width: 420px; /* Tăng chút để dễ nhìn */
+    margin: auto;
+    padding: 25px;
+    border-radius: 10px;
+    background: var(--bg-light);
+    color: var(--text-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: background 0.3s, color 0.3s;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px; /* ✅ Tạo khoảng cách với footer *
+     /* Căn giữa nội dung */
+}
+
+.dark-mode .withdraw-container {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+select, 
+.payment-box {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: var(--bg-light);
+    color: var(--text-light);
+    transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+.dark-mode select,
+.dark-mode .payment-box {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+    border: 1px solid #555;
+}
+
+/* ✅ Tăng hiệu ứng hover cho nút */
+.continue-button, 
+.payment-button {
+    width: 100%;
+    padding: 14px;
+    background: var(--button-light);
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.continue-button:hover, 
+.payment-button:hover {
+    background: var(--button-dark);
+    transform: scale(1.03);
+}

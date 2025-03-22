@@ -1,0 +1,131 @@
+:root {
+  --background-light: #fff;
+  --background-dark: #181a20;
+  --text-light: #1e2329;
+  --text-dark: #eaecef;
+  --border-light: #e0e0e0;
+  --border-dark: #2d2f36;
+  --button-light: #fcd535;
+  --button-dark: #f8b500;
+  --input-bg-light: #f5f5f5;
+  --input-bg-dark: #222429;
+}
+
+body {
+  background-color: var(--background-light);
+  color: var(--text-light);
+  transition: background 0.3s, color 0.3s;
+}
+
+.dark-mode {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+/* Container */
+.deposit-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+  background: var(--background-light);
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, color 0.3s;
+}
+
+.dark-mode .deposit-container {
+  background: var(--background-dark);
+  box-shadow: 0px 2px 10px rgba(255, 255, 255, 0.1);
+  color: var(--text-dark);
+}
+
+/* Text */
+h2 {
+  text-align: center;
+  color: var(--text-light);
+  transition: color 0.3s;
+}
+
+.dark-mode h2 {
+  color: var(--text-dark);
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-top: 15px;
+  color: var(--text-light);
+  transition: color 0.3s;
+}
+
+.dark-mode label {
+  color: var(--text-dark);
+}
+
+/* Select Input */
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid var(--border-light);
+  border-radius: 5px;
+  background: var(--input-bg-light);
+  color: var(--text-light);
+  transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+.dark-mode select {
+  background: var(--input-bg-dark);
+  border: 1px solid var(--border-dark);
+  color: var(--text-dark);
+}
+
+select:focus {
+  outline: 2px solid var(--button-light);
+  outline-offset: 2px;
+}
+
+/* Payment Box */
+.payment-box {
+  padding: 15px;
+  margin-top: 10px;
+  background: var(--input-bg-light);
+  border-radius: 5px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-light);
+  transition: background 0.3s, color 0.3s;
+}
+
+.dark-mode .payment-box {
+  background: var(--input-bg-dark);
+  color: var(--text-dark);
+}
+
+/* Button */
+.continue-button {
+  width: 100%;
+  padding: 12px;
+  background: var(--button-light);
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+  color: var(--text-light);
+}
+
+.dark-mode .continue-button {
+  color: var(--text-dark);
+}
+
+.continue-button:hover {
+  background: var(--button-dark);
+}
+
+.continue-button:focus {
+  outline: 2px solid var(--button-light);
+  outline-offset: 2px;
+}

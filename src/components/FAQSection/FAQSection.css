@@ -1,0 +1,66 @@
+/* 🌍 Global styles */
+.faq-section {
+    text-align: left;
+    padding: 30px 20px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.faq-section h2, .faq-section h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* 📚 Guide & FAQ lists */
+.guide-list, .faq-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.guide-item, .faq-item {
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    background: var(--item-bg);
+    color: var(--item-text);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.guide-item:hover, .faq-item:hover {
+    background: var(--hover-bg);
+}
+
+/* 🎨 Light & Dark Mode */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #222;
+    --item-bg: #f2f2f2;
+    --item-text: #333;
+    --hover-bg: #ddd;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #0b0e11;
+        --text-color: #ffffff;
+        --item-bg: #222;
+        --item-text: #fff;
+        --hover-bg: #444;
+    }
+}
+
+/* 🌑 Manual Dark Mode Toggle */
+.dark-mode {
+    --bg-color: #0b0e11;
+    --text-color: #ffffff;
+    --item-bg: #222;
+    --item-text: #fff;
+    --hover-bg: #444;
+}

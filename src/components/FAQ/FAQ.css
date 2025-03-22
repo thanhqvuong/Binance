@@ -1,0 +1,147 @@
+/* Đặt margin và padding cho body */
+body {
+  margin: 0; /* Loại bỏ margin mặc định */
+  padding: 0; /* Loại bỏ padding mặc định */
+  background-color: var(--background-color); /* Đặt màu nền cho body */
+}
+
+/* Light Mode */
+.light-mode {
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --highlight-color: #fcd535;
+  --border-color: #2c2f36;
+  --faq-bg: #f9f9f9;
+  --faq-answer-bg: #eeeeee;
+  --faq-text-color: #000000; /* Black text for questions, answers, and toggles in light mode */
+  --faq-hover-bg: #f1f1f1;
+  --button-text-color: #000000;
+  --title-color: #fcd535; /* Yellow color for h2 */
+}
+
+/* Dark Mode */
+.dark-mode {
+  --background-color: #181a20;
+  --text-color: #ffffff;
+  --highlight-color: #fcd535;
+  --border-color: #2c2f36;
+  --faq-bg: #2c2f36;
+  --faq-answer-bg: #292929;
+  --faq-text-color: #ffffff; /* White text for questions, answers, and toggles in dark mode */
+  --faq-hover-bg: #3a3a3a;
+  --button-text-color: #000000;
+  --title-color: #fcd535; /* Yellow color for h2 */
+}
+
+/* FAQ Container */
+.faq-container {
+  max-width: 800px;
+  margin: 40px auto; /* Giữ margin này nếu bạn muốn khoảng cách từ trên xuống */
+  padding: 20px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.faq-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--title-color); /* Yellow color for h2 */
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.faq-item {
+  background-color: var(--faq-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.faq-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--faq-text-color); /* Text color for questions, answers, and toggles */
+}
+
+.faq-number {
+  background-color: var(--highlight-color);
+  color: var(--button-text-color);
+  font-size: 14px;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.faq-toggle {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--faq-text-color); /* Text color for questions, answers, and toggles */
+}
+
+.faq-answer {
+  padding: 15px;
+  font-size: 16px;
+  color: var(--faq-text-color); /* Text color for questions, answers, and toggles */
+  border-top: 1px solid var(--border-color);
+  background-color: var(--faq-answer-bg);
+}
+
+/* Dark Mode */
+[data-theme="dark"] .faq-container {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .faq-item {
+  background-color: var(--faq-bg);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .faq-header {
+  color: var(--faq-text-color); /* Text color for questions, answers, and toggles */
+}
+
+[data-theme="dark"] .faq-answer {
+  background-color: var(--faq-answer-bg);
+  color: var(--faq-text-color); /* Text color for questions, answers, and toggles */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .faq-container {
+    padding: 15px;
+  }
+
+  .faq-title {
+    font-size: 24px;
+  }
+
+  .faq-header {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .faq-answer {
+    font-size: 14px;
+    padding: 12px;
+  }
+}

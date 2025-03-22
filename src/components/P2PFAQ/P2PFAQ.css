@@ -1,0 +1,121 @@
+/* Định nghĩa biến màu cho Light Mode */
+:root {
+    --background-light: #ffffff;
+    --text-light: #000000;
+    --tab-inactive-light: #f0f0f0;
+    --tab-active-light: #ffcc00;
+    --faq-item-light: #ffffff;
+    --faq-border-light: #dddddd;
+  
+    /* Màu Dark Mode */
+    --background-dark: #181818;
+    --text-dark: #ffffff;
+    --tab-inactive-dark: #333;
+    --tab-active-dark: #ffcc00;
+    --faq-item-dark: #222;
+    --faq-border-dark: #444;
+  }
+  
+  /* Container chính */
+  .faq-p2p-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background: var(--background-light);
+    color: var(--text-light);
+    transition: background 0.3s, color 0.3s;
+  }
+  
+  /* Tabs */
+  .tabs {
+    display: flex;
+    border-bottom: 2px solid var(--faq-border-light);
+  }
+  
+  .tab-button {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    background: var(--tab-inactive-light);
+    color: var(--text-light);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+  
+  .tab-button.active {
+    background: var(--tab-active-light);
+    color: #000;
+  }
+  
+  /* Danh sách FAQ */
+  .faq-list {
+    margin-top: 20px;
+  }
+  
+  .faq-item {
+    background: var(--faq-item-light);
+    border: 1px solid var(--faq-border-light);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: background 0.3s, border 0.3s;
+  }
+  
+  .faq-question {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    background: var(--faq-item-light);
+    border-bottom: 1px solid var(--faq-border-light);
+    transition: background 0.3s;
+  }
+  
+  .faq-item[open] .faq-question {
+    background: var(--tab-active-light);
+  }
+  
+  .faq-answer {
+    padding: 12px;
+    background: var(--faq-item-light);
+  }
+  
+  /* DARK MODE */
+  .dark-mode .faq-p2p-container {
+    background: var(--background-dark);
+    color: var(--text-dark);
+  }
+  
+  .dark-mode .tab-button {
+    background: var(--tab-inactive-dark);
+    color: var(--text-dark);
+  }
+  
+  .dark-mode .tab-button.active {
+    background: var(--tab-active-dark);
+    color: #000;
+  }
+  
+  .dark-mode .faq-item {
+    background: var(--faq-item-dark);
+    border: 1px solid var(--faq-border-dark);
+  }
+  
+  .dark-mode .faq-question {
+    background: var(--faq-item-dark);
+    border-bottom: 1px solid var(--faq-border-dark);
+  }
+  
+  .dark-mode .faq-item[open] .faq-question {
+    background: var(--tab-active-dark);
+  }
+  
+  .dark-mode .faq-answer {
+    background: var(--faq-item-dark);
+  }
+  

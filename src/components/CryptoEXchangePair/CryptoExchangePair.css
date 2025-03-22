@@ -1,0 +1,116 @@
+/* 🌍 Global styles */
+.crypto-section {
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.crypto-section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 🏦 Fiat selection buttons */
+.fiat-selection {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.fiat-button {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-border);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+.fiat-button.active {
+    background: var(--active-button-bg);
+    color: var(--active-button-text);
+}
+
+/* 💱 Crypto pairs list */
+.crypto-pairs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.crypto-pair {
+    background: var(--pair-bg);
+    color: var(--pair-text);
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* 📱 Responsive Styles */
+@media (max-width: 768px) {
+    .fiat-selection {
+        gap: 10px;
+    }
+    
+    .fiat-button {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    
+    .crypto-pair {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+/* 🎨 Light & Dark Mode */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #222;
+    --button-bg: #f8f8f8;
+    --button-text: #222;
+    --button-border: #ddd;
+    --active-button-bg: #ffd700;
+    --active-button-text: #222;
+    --pair-bg: #f2f2f2;
+    --pair-text: #333;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #0b0e11;
+        --text-color: #ffffff;
+        --button-bg: #1a1d21;
+        --button-text: #ddd;
+        --button-border: #444;
+        --active-button-bg: #facc15;
+        --active-button-text: #222;
+        --pair-bg: #222;
+        --pair-text: #fff;
+    }
+}
+
+/* 🌑 Manual Dark Mode Toggle */
+.dark-mode {
+    --bg-color: #0b0e11;
+    --text-color: #ffffff;
+    --button-bg: #1a1d21;
+    --button-text: #ddd;
+    --button-border: #444;
+    --active-button-bg: #facc15;
+    --active-button-text: #222;
+    --pair-bg: #222;
+    --pair-text: #fff;
+}

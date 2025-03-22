@@ -1,0 +1,114 @@
+/* P2PExchange.css */
+
+:root {
+    --background-light: #ffffff;
+    --text-light: #000000;
+    --background-dark: #1e1e1e;
+    --text-dark: #ffffff;
+  }
+  
+  .dark-mode {
+    background: var(--background-dark);
+    color: var(--text-dark);
+  }
+  
+  .p2p-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 32px;
+    max-width: 900px;
+    margin: auto;
+    background: var(--background-light);
+    color: var(--text-light);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dark-mode .p2p-container {
+    background: var(--background-dark);
+    color: var(--text-dark);
+  }
+  
+  .p2p-left {
+    flex: 1;
+    padding-right: 20px;
+  }
+  
+  .p2p-right {
+    flex: 1.2; /* Tăng kích thước */
+    padding: 20px;
+    background: #f8f8f8;
+    border-radius: 8px;
+  }
+  
+  .dark-mode .p2p-right {
+    background: #2a2a2a;
+  }
+  
+  .tab {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .tab button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: gray;
+  }
+  
+  .tab button.active {
+    color: black;
+    border-bottom: 2px solid black;
+  }
+  
+  .dark-mode .tab button.active {
+    color: white;
+    border-bottom: 2px solid white;
+  }
+  
+  .input-container {
+    margin-top: 10px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .dark-mode .input {
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+  }
+  
+  .result {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .button.active {
+    background: blue;
+  }
+  
+  .button.disabled {
+    background: gray;
+    cursor: not-allowed;
+  }

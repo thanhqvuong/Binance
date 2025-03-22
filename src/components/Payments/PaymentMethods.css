@@ -1,0 +1,88 @@
+:root {
+  --bg-light: #ffffff;
+  --text-light: #333;
+  --bg-dark: #121212;
+  --text-dark: #f5f5f5;
+  --card-light: #f8f9fa;
+  --card-dark: #1e1e1e;
+  --hover-light: #e0e0e0;
+  --hover-dark: #333;
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --shadow-dark: rgba(255, 255, 255, 0.1);
+}
+
+body.light-mode {
+  background-color: var(--bg-light);
+  color: var(--text-light);
+}
+
+body.dark-mode {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+.payment-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+h1 {
+  text-align: left;
+}
+
+.payment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.payment-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.light-mode .payment-card {
+  background-color: var(--card-light);
+  color: var(--text-light);
+}
+
+.dark-mode .payment-card {
+  background-color: var(--card-dark);
+  color: var(--text-dark);
+}
+
+.light-mode .payment-card:hover {
+  background-color: var(--hover-light);
+}
+
+.dark-mode .payment-card:hover {
+  background-color: var(--hover-dark);
+}
+
+.indicator {
+  width: 6px;
+  height: 16px;
+  border-radius: 3px;
+}
+
+.qr-container {
+  margin-top: 20px;
+  padding: 20px;
+  display: inline-block;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px var(--shadow-light);
+  transition: box-shadow 0.3s;
+}
+
+.dark-mode .qr-container {
+  background: var(--card-dark);
+  box-shadow: 0px 0px 10px var(--shadow-dark);
+}
