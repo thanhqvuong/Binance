@@ -1,5 +1,3 @@
-/* RegisterContent.css */
-
 :root {
   --background-dark: #1e1e2f;
   --background-light: #f4f4f4;
@@ -13,11 +11,26 @@
   --primary-gradient-hover: linear-gradient(135deg, #0056b3, #004080);
 }
 
+/* Light/Dark Mode */
+[data-theme="light"] {
+  --background: var(--background-light);
+  --text-color: var(--text-light);
+  --input-bg: var(--input-bg-light);
+  --input-border: var(--input-border-light);
+}
+
+[data-theme="dark"] {
+  --background: var(--background-dark);
+  --text-color: var(--text-dark);
+  --input-bg: var(--input-bg-dark);
+  --input-border: var(--input-border-dark);
+}
+
 .register-container {
   max-width: 400px;
   margin: auto;
   padding: 2rem;
-  background: var(--background-dark);
+  background: var(--background);
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   text-align: center;
@@ -25,7 +38,7 @@
 }
 
 h1 {
-  color: var(--text-dark);
+  color: var(--text-color);
   font-size: 1.8rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
@@ -42,9 +55,9 @@ h1 {
 .ant-input-password {
   height: 45px;
   border-radius: 8px;
-  border: 1px solid var(--input-border-dark);
-  background: var(--input-bg-dark);
-  color: var(--text-dark);
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-color);
   transition: all 0.3s;
   padding: 0.5rem;
   font-size: 1rem;
