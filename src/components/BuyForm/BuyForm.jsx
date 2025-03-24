@@ -8,6 +8,7 @@ const BuyForm = () => {
   const [balance, setBalance] = useState(0);
   const [subscription, setSubscription] = useState(null);
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [alreadyPurchased, setAlreadyPurchased] = useState(false);
   const USDT_RATE = 25870;
 
   useEffect(() => {
@@ -32,9 +33,14 @@ const BuyForm = () => {
 
     const storedSubscription = JSON.parse(localStorage.getItem("subscription"));
     if (storedSubscription?.username === storedUser.username) {
-      setSubscription(storedSubscription.plan);
+      setSubscription(storedSubscription);
       setUsdtAmount(storedSubscription.vndAmount / USDT_RATE);
-      setIsConfirmed(true);
+      setIsConfirmed(!!storedSubscription.lastPurchase);
+
+      // Kiểm tra nếu đã mua trong ngày
+      if (storedSubscription.lastPurchase && dayjs(storedSubscription.lastPurchase).isSame(dayjs(), "day")) {
+        setAlreadyPurchased(true);
+      }
     }
   };
 
@@ -46,35 +52,45 @@ const BuyForm = () => {
       username: storedUser.username,
       plan,
       vndAmount: vnd,
+      lastPurchase: null,
     };
     localStorage.setItem("subscription", JSON.stringify(newSubscription));
-    setSubscription(plan);
+    setSubscription(newSubscription);
     setIsConfirmed(false);
+    setAlreadyPurchased(false);
   };
 
   const confirmSubscription = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (!storedUser) return;
+    if (!storedUser || !subscription) return;
 
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-    const newTransaction = {
-      username: storedUser.username, // Lưu kèm username để quản lý user
-      type: "Mua", // Loại giao dịch
-      amount: vnd, // Số tiền giao dịch (VND)
-      currency: "VND", // Đơn vị tiền tệ
-      time: formattedTime, // Thời gian chính xác
-    };
-    transactions.push(newTransaction);
-    localStorage.setItem("transactions", JSON.stringify(transactions));
 
+    const newTransaction = {
+      username: storedUser.username,
+      type: "Mua",
+      amount: subscription.vndAmount,
+      currency: "VND",
+      time: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+    };
+
+    const updatedTransactions = [...transactions, newTransaction];
+    localStorage.setItem("transactions", JSON.stringify(updatedTransactions));
+
+    const updatedSubscription = { ...subscription, lastPurchase: newTransaction.time };
+    localStorage.setItem("subscription", JSON.stringify(updatedSubscription));
+    setSubscription(updatedSubscription);
     setIsConfirmed(true);
-    alert(`✅ Bạn đã chọn gói ${subscription} với ${usdtAmount} USDT!`);
+    setAlreadyPurchased(true);
+
+    alert(`✅ Bạn đã mua gói ${subscription.plan} với ${usdtAmount} USDT!`);
   };
 
   const cancelSubscription = () => {
     localStorage.removeItem("subscription");
     setSubscription(null);
     setIsConfirmed(false);
+    setAlreadyPurchased(false);
   };
 
   const increaseUSDT = () => {
@@ -93,9 +109,14 @@ const BuyForm = () => {
     <div className="buy-form">
       <h2>🔹 Giao Dịch USDT Định Kỳ 🔹</h2>
       <p><strong>Số dư:</strong> {formatCurrency(balance)} VND</p>
+
+      {alreadyPurchased && (
+        <p style={{ color: "green", fontWeight: "bold" }}>✅ Bạn đã mua gói định kỳ hôm nay.</p>
+      )}
+
       {subscription ? (
         <div>
-          <p>Gói hiện tại: {subscription} - {formatCurrency(vnd)} VND</p>
+          <p>Gói hiện tại: {subscription.plan} - {formatCurrency(subscription.vndAmount)} VND</p>
           {!isConfirmed ? (
             <>
               <button onClick={decreaseUSDT}>-</button>
