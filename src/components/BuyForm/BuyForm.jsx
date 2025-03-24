@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import "./BuyForm.css";
 
+const USDT_RATE = 25870;
+
 const BuyForm = () => {
   const [vnd, setVnd] = useState(150000);
   const [usdtAmount, setUsdtAmount] = useState(1);
@@ -9,7 +11,7 @@ const BuyForm = () => {
   const [subscription, setSubscription] = useState(null);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [alreadyPurchased, setAlreadyPurchased] = useState(false);
-  const USDT_RATE = 25870;
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     loadUserData();
@@ -20,7 +22,8 @@ const BuyForm = () => {
   const loadUserData = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (!storedUser) return;
-
+    
+    setUsername(storedUser.username);
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
     const userTransactions = transactions.filter(tx => tx.username === storedUser.username);
 
@@ -37,7 +40,6 @@ const BuyForm = () => {
       setUsdtAmount(storedSubscription.vndAmount / USDT_RATE);
       setIsConfirmed(!!storedSubscription.lastPurchase);
 
-      // Kiểm tra nếu đã mua trong ngày
       if (storedSubscription.lastPurchase && dayjs(storedSubscription.lastPurchase).isSame(dayjs(), "day")) {
         setAlreadyPurchased(true);
       }
@@ -45,11 +47,13 @@ const BuyForm = () => {
   };
 
   const handleSubscriptionChange = (plan) => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (!storedUser || balance < vnd) return;
+    if (balance < vnd) {
+      alert("❌ Số dư không đủ!");
+      return;
+    }
 
     const newSubscription = {
-      username: storedUser.username,
+      username,
       plan,
       vndAmount: vnd,
       lastPurchase: null,
@@ -61,21 +65,20 @@ const BuyForm = () => {
   };
 
   const confirmSubscription = () => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (!storedUser || !subscription) return;
+    if (!subscription) return;
 
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
 
     const newTransaction = {
-      username: storedUser.username,
+      username,
       type: "Mua",
       amount: subscription.vndAmount,
       currency: "VND",
       time: dayjs().format("YYYY-MM-DD HH:mm:ss"),
     };
 
-    const updatedTransactions = [...transactions, newTransaction];
-    localStorage.setItem("transactions", JSON.stringify(updatedTransactions));
+    transactions.push(newTransaction);
+    localStorage.setItem("transactions", JSON.stringify(transactions));
 
     const updatedSubscription = { ...subscription, lastPurchase: newTransaction.time };
     localStorage.setItem("subscription", JSON.stringify(updatedSubscription));
@@ -83,7 +86,7 @@ const BuyForm = () => {
     setIsConfirmed(true);
     setAlreadyPurchased(true);
 
-    alert(`✅ Bạn đã mua gói ${subscription.plan} với ${usdtAmount} USDT!`);
+    alert(`✅ Bạn đã mua gói ${subscription.plan} với ${usdtAmount.toFixed(3)} USDT!`);
   };
 
   const cancelSubscription = () => {
@@ -93,16 +96,11 @@ const BuyForm = () => {
     setAlreadyPurchased(false);
   };
 
-  const increaseUSDT = () => {
-    setVnd((usdtAmount + 1) * USDT_RATE);
-    setUsdtAmount(usdtAmount + 1);
-  };
-
-  const decreaseUSDT = () => {
-    if (usdtAmount > 1) {
-      setVnd((usdtAmount - 1) * USDT_RATE);
-      setUsdtAmount(usdtAmount - 1);
-    }
+  const changeUSDT = (amount) => {
+    const newAmount = usdtAmount + amount;
+    if (newAmount < 1) return;
+    setVnd(newAmount * USDT_RATE);
+    setUsdtAmount(newAmount);
   };
 
   return (
@@ -119,9 +117,9 @@ const BuyForm = () => {
           <p>Gói hiện tại: {subscription.plan} - {formatCurrency(subscription.vndAmount)} VND</p>
           {!isConfirmed ? (
             <>
-              <button onClick={decreaseUSDT}>-</button>
-              <span>{usdtAmount} USDT</span>
-              <button onClick={increaseUSDT}>+</button>
+              <button onClick={() => changeUSDT(-1)}>-</button>
+              <span>{usdtAmount.toFixed(3)} USDT</span>
+              <button onClick={() => changeUSDT(1)}>+</button>
               <button onClick={confirmSubscription}>✅ Xác nhận</button>
             </>
           ) : (

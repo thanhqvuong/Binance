@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
@@ -17,11 +17,11 @@ const Login = () => {
             .required("Vui lòng nhập số điện thoại hoặc email")
             .test("is-valid-username", "Số điện thoại hoặc email không hợp lệ", (value) => {
                 if (!value) return false;
-                const phoneRegex = /^[0-9]{10}$/; // SĐT 10 số
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Email hợp lệ
+                const phoneRegex = /^[0-9]{10}$/;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return phoneRegex.test(value) || emailRegex.test(value);
             })
-            .trim(), // Loại bỏ khoảng trắng đầu/cuối
+            .trim(),
         password: Yup.string()
             .required("Vui lòng nhập mật khẩu")
             .min(5, "Mật khẩu phải từ 5 - 32 ký tự")
@@ -36,50 +36,41 @@ const Login = () => {
         setLoading(true);
         setProgress(10);
 
-        let progressInterval = setInterval(() => {
-            setProgress((prev) => (prev < 90 ? prev + 10 : prev));
-        }, 200);
+        const simulateProgress = (target) => {
+            setTimeout(() => {
+                setProgress((prev) => (prev < target ? prev + 10 : prev));
+                if (progress < target) simulateProgress(target);
+            }, 200);
+        };
+
+        simulateProgress(90);
 
         try {
-            // 🔥 Gọi API lấy danh sách user
             const response = await fetch(API_URL);
             if (!response.ok) throw new Error("Không thể kết nối đến server!");
 
             const data = await response.json();
-            const rawData = data?.data?.data || [];
+            const allUsers = (data?.data?.data || []).flatMap((item) => item?.users || []);
 
-            // ✅ Kiểm tra dữ liệu API
-            if (!Array.isArray(rawData)) throw new Error("Dữ liệu API không hợp lệ");
-
-            // ✅ Lấy danh sách user
-            const allUsers = rawData.flatMap(item => item?.users || item);
-
-            // ✅ Kiểm tra username (email/SĐT) và mật khẩu
             const user = allUsers.find(
                 (u) => (u.email === values.username || u.phone === values.username) && u.password === values.password
             );
 
-            setProgress(100);
+            simulateProgress(100);
             setTimeout(() => {
-                clearInterval(progressInterval);
-                setLoading(false);
-
                 if (user) {
-                    if (values.rememberMe) {
-                        localStorage.setItem("user", JSON.stringify(user)); // 🔥 Lưu vào localStorage nếu nhớ đăng nhập
-                    } else {
-                        sessionStorage.setItem("user", JSON.stringify(user)); // 🔥 Lưu vào sessionStorage nếu không nhớ đăng nhập
-                    }
+                    const storage = values.rememberMe ? localStorage : sessionStorage;
+                    storage.setItem("user", JSON.stringify(user));
                     navigate("/profile");
                 } else {
                     setErrors({ password: "Tên đăng nhập hoặc mật khẩu không đúng" });
                 }
+                setLoading(false);
             }, 500);
         } catch (error) {
             console.error("❌ Lỗi:", error);
             setErrors({ password: "Lỗi hệ thống, vui lòng thử lại sau!" });
             setLoading(false);
-            clearInterval(progressInterval);
         }
     };
 
