@@ -1,77 +1,128 @@
-import React, { useState, useEffect } from "react"; // Import React và hooks
-import "./BuyForm.css"; // Import file CSS
+import React, { useState, useEffect } from "react"; // Import React và các hooks
+import "./BuyForm.css"; // Import CSS cho giao diện
 
 const BuyForm = () => {
-  const [vnd, setVnd] = useState(150000); // Số tiền mặc định tối thiểu
-  const [usdt, setUsdt] = useState((150000 / 25870).toFixed(6)); // Tính USDT từ VND
+  const [vnd, setVnd] = useState(150000); // Số tiền mặc định tối thiểu (VND)
+  const [usdtAmount, setUsdtAmount] = useState((150000 / 25870).toFixed(6)); // Số lượng USDT tính theo tỷ giá
   const [error, setError] = useState(""); // Lưu trạng thái lỗi
-  const [balance, setBalance] = useState(0); // Số dư tài khoản
+  const [balance, setBalance] = useState(0); // Số dư tài khoản (VND)
   const [subscription, setSubscription] = useState(null); // Gói định kỳ hiện tại
-  const [usdtAmount, setUsdtAmount] = useState(1); // Số USDT muốn mua
   const [lastPurchase, setLastPurchase] = useState(null); // Lần mua cuối cùng
+  const [showConfirm, setShowConfirm] = useState(false); // Hiển thị nút xác nhận
   const USDT_RATE = 25870; // Tỷ giá USDT
-  
+
+  // Tải dữ liệu người dùng từ localStorage khi component mount
   useEffect(() => {
-    loadUserData(); // Gọi hàm tải dữ liệu khi component mount
+    loadUserData();
   }, []);
 
+  // Hàm định dạng số tiền (VND) có dấu phẩy
   const formatCurrency = (value) => {
-    return value.toLocaleString("vi-VN").replace(/\./g, ","); // Định dạng số tiền VND
+    return value.toLocaleString("vi-VN").replace(/\./g, ",");
   };
 
+  // Hàm tải dữ liệu từ localStorage
   const loadUserData = () => {
     const storedUser = JSON.parse(localStorage.getItem("user")); // Lấy thông tin user từ localStorage
     if (!storedUser) return;
 
-    const transactions = JSON.parse(localStorage.getItem("transactions")) || []; // Lấy danh sách giao dịch
-    const userTransactions = transactions.filter(tx => tx.username === storedUser.username); // Lọc giao dịch theo user
+    // Lấy danh sách giao dịch từ localStorage
+    const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+    const userTransactions = transactions.filter(tx => tx.username === storedUser.username);
 
+    // Tính toán số dư từ các giao dịch (cộng nạp, trừ rút)
     let totalVND = userTransactions.reduce((acc, tx) => {
-      if (tx.type === "Nạp") return acc + tx.amount; // Cộng số tiền nếu là nạp
-      if (tx.type === "Rút") return acc - tx.amount; // Trừ số tiền nếu là rút
+      if (tx.type === "Nạp") return acc + tx.amount;
+      if (tx.type === "Rút") return acc - tx.amount;
       return acc;
     }, 0);
-    setBalance(totalVND); // Cập nhật số dư tài khoản
+    setBalance(totalVND); // Cập nhật số dư
 
-    const storedSubscription = JSON.parse(localStorage.getItem("subscription")); // Lấy thông tin gói định kỳ
+    // Lấy thông tin gói định kỳ
+    const storedSubscription = JSON.parse(localStorage.getItem("subscription"));
     if (storedSubscription?.username === storedUser.username) {
-      setSubscription(storedSubscription.plan); // Cập nhật gói định kỳ
-      setUsdtAmount(storedSubscription.vndAmount / USDT_RATE); // Tính lại số USDT
-      setLastPurchase(storedSubscription.lastPurchase); // Cập nhật ngày mua cuối
+      setSubscription(storedSubscription.plan);
+      setUsdtAmount(storedSubscription.vndAmount / USDT_RATE); // Cập nhật số USDT từ gói định kỳ
+      setLastPurchase(storedSubscription.lastPurchase);
     }
   };
 
+  // Khi chọn gói định kỳ
   const handleSubscriptionChange = (plan) => {
-    const storedUser = JSON.parse(localStorage.getItem("user")); // Lấy user từ localStorage
+    const storedUser = JSON.parse(localStorage.getItem("user"));
     if (!storedUser || balance < vnd) {
-      setError("❌ Số dư không đủ!"); // Báo lỗi nếu không đủ tiền
+      setError("❌ Số dư không đủ!");
       return;
     }
 
+    // Cập nhật thông tin gói vào localStorage
     const newSubscription = {
       username: storedUser.username,
-      plan, // Lưu loại gói định kỳ
-      vndAmount: vnd, // Lưu số tiền VND
+      plan,
+      vndAmount: vnd, // Số tiền VND theo gói
       lastPurchase: null, // Reset ngày mua
     };
-    localStorage.setItem("subscription", JSON.stringify(newSubscription)); // Lưu vào localStorage
+    localStorage.setItem("subscription", JSON.stringify(newSubscription));
     setSubscription(plan); // Cập nhật UI
+    setShowConfirm(true); // Hiển thị nút xác nhận
   };
 
+  // Khi xác nhận gói định kỳ
+  const confirmSubscription = () => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (!storedUser) return;
+
+    const today = new Date().toISOString().split("T")[0]; // Lấy ngày hôm nay
+
+    // Kiểm tra nếu hôm nay đã mua gói thì không cho mua lại
+    if (lastPurchase === today) {
+      setError("✔️ Hôm nay bạn đã mua gói này rồi!");
+      return;
+    }
+
+    // Tạo giao dịch và lưu vào transactions
+    const newTransaction = {
+      username: storedUser.username,
+      type: "Mua",
+      amount: vnd,
+      currency: "VND",
+      time: new Date().toLocaleString("vi-VN"), // Lấy thời gian hiện tại
+    };
+
+    const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+    transactions.push(newTransaction);
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+
+    // Cập nhật thông tin gói định kỳ (có thời gian mua)
+    const updatedSubscription = {
+      ...JSON.parse(localStorage.getItem("subscription")),
+      lastPurchase: today,
+    };
+    localStorage.setItem("subscription", JSON.stringify(updatedSubscription));
+    setLastPurchase(today); // Cập nhật ngày mua cuối
+
+    setShowConfirm(false); // Ẩn nút xác nhận
+    setError("✔️ Bạn đã chọn gói định kỳ thành công!"); // Hiển thị thông báo thành công
+  };
+
+  // Hủy gói định kỳ
   const cancelSubscription = () => {
-    localStorage.removeItem("subscription"); // Xóa gói định kỳ khỏi localStorage
-    setSubscription(null); // Cập nhật UI
+    localStorage.removeItem("subscription");
+    setSubscription(null);
+    setShowConfirm(false);
   };
 
+  // Tăng số lượng USDT muốn mua
   const increaseUSDT = () => {
-    let newVnd = (usdtAmount + 1) * USDT_RATE; // Tính số tiền mới khi tăng USDT
+    let newVnd = (usdtAmount + 1) * USDT_RATE;
     setVnd(newVnd);
     setUsdtAmount(usdtAmount + 1);
   };
 
+  // Giảm số lượng USDT muốn mua
   const decreaseUSDT = () => {
     if (usdtAmount > 1) {
-      let newVnd = (usdtAmount - 1) * USDT_RATE; // Tính số tiền mới khi giảm USDT
+      let newVnd = (usdtAmount - 1) * USDT_RATE;
       setVnd(newVnd);
       setUsdtAmount(usdtAmount - 1);
     }
@@ -81,6 +132,7 @@ const BuyForm = () => {
     <div className="buy-form">
       <h2>🔹 Giao Dịch USDT Định Kỳ 🔹</h2>
       <p><strong>Số dư:</strong> {formatCurrency(balance)} VND</p>
+
       {subscription ? (
         <div>
           <p>Gói hiện tại: {subscription} - {formatCurrency(vnd)} VND</p>
@@ -88,6 +140,7 @@ const BuyForm = () => {
           <span>{usdtAmount} USDT</span>
           <button onClick={increaseUSDT}>+</button>
           <button onClick={cancelSubscription}>❌ Hủy gói</button>
+          {showConfirm && <button onClick={confirmSubscription}>✔️ Xác nhận</button>}
         </div>
       ) : (
         <div>
@@ -96,9 +149,10 @@ const BuyForm = () => {
           <button onClick={() => handleSubscriptionChange("monthly")} disabled={balance < vnd}>Mỗi tháng</button>
         </div>
       )}
+
       {error && <p className="error">{error}</p>}
     </div>
   );
 };
 
-export default BuyForm; // Xuất component
+export default BuyForm;
