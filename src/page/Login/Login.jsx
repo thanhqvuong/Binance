@@ -50,10 +50,27 @@ const Login = () => {
             if (!response.ok) throw new Error("Không thể kết nối đến server!");
 
             const data = await response.json();
-            const allUsers = (data?.data?.data || []).flatMap((item) => item?.users || []);
+            let allUsers = [];
 
+            // ✅ Lấy user trong mảng "users"
+            if (Array.isArray(data?.data?.data)) {
+                allUsers = data.data.data.flatMap((item) => item?.users || []);
+            }
+
+            // ✅ Nếu có user riêng lẻ ngoài mảng, thêm vào danh sách
+            if (data?.data?.data) {
+                data.data.data.forEach((item) => {
+                    if (item.username && item.password) {
+                        allUsers.push(item);
+                    }
+                });
+            }
+
+            // ✅ Kiểm tra user hợp lệ
             const user = allUsers.find(
-                (u) => (u.email === values.username || u.phone === values.username) && u.password === values.password
+                (u) =>
+                    (u.email === values.username || u.phone === values.username) &&
+                    u.password === values.password
             );
 
             simulateProgress(100);
