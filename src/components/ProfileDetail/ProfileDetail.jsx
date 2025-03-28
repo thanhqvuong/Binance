@@ -103,7 +103,11 @@ const ProfileDetail = ({ username }) => {
                   <Cell key={tx.name} fill={COLORS[tx.name]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => value.toFixed(2)} contentStyle={getTooltipStyle()} />
+              <Tooltip 
+  formatter={(value) => (value / EXCHANGE_RATE).toFixed(2)} 
+  contentStyle={getTooltipStyle()} 
+/>
+
               <Legend />
             </PieChart>
           </ResponsiveContainer>
