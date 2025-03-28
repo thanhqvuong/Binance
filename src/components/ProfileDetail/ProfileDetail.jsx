@@ -10,8 +10,14 @@ const ProfileDetail = ({ username }) => {
   const [depositWithdrawData, setDepositWithdrawData] = useState([]); // Dữ liệu Nạp & Rút
   const [buySellData, setBuySellData] = useState([]); // Dữ liệu Mua & Bán
   const [totalData, setTotalData] = useState([]); // Dữ liệu tổng giao dịch (tính theo %)
+  const [isDarkMode, setIsDarkMode] = useState(document.body.classList.contains("dark-mode"));
 
   useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(document.body.classList.contains("dark-mode"));
+    });
+  
+    observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
     // Lấy thông tin người dùng từ localStorage
     const storedUser = JSON.parse(localStorage.getItem("user"));
 

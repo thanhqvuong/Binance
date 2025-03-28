@@ -74,3 +74,17 @@ h2, h3 {
   border: 1px solid var(--border-color);
   box-shadow: 0px 2px 5px var(--shadow-color);
 }
+
+/* Cố định tooltip container để không bị ghi đè bởi các style khác */
+.recharts-tooltip-item {
+  color: var(--tooltip-text) !important;
+}
+
+.recharts-default-tooltip {
+  background-color: var(--tooltip-bg) !important;
+  color: var(--tooltip-text) !important;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0px 2px 5px var(--shadow-color);
+}
