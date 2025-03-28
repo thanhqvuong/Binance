@@ -93,8 +93,21 @@ const ProfileDetail = ({ username }) => {
               </Pie>
               <Tooltip 
   formatter={(value) => value.toLocaleString("vi-VN")} 
-  contentStyle={getTooltipStyle()} 
-  wrapperStyle={{ outline: "none" }} 
+  contentStyle={{
+    backgroundColor: document.body.classList.contains("dark-mode") ? "#333" : "#fff", // Dark mode: nền tối, Light mode: nền trắng
+    color: document.body.classList.contains("dark-mode") ? "#fff" : "#000", // Dark mode: chữ trắng, Light mode: chữ đen
+    border: "1px solid #777",
+    borderRadius: "5px",
+    padding: "10px",
+    fontSize: "16px"
+  }}
+  itemStyle={{
+    color: document.body.classList.contains("dark-mode") ? "#fff" : "#000", // Cập nhật màu chữ theo theme
+    fontSize: "14px"
+  }}
+  wrapperStyle={{
+    outline: "none"
+  }}
 />
 
               <Legend />
@@ -118,14 +131,20 @@ const ProfileDetail = ({ username }) => {
                    return typeof value === "number" ? (value / 25870).toFixed(2) : value;
                }}
                contentStyle={{
-                    backgroundColor: document.body.classList.contains("dark-mode") ? "#222" : "#fff",
-                    color: document.body.classList.contains("dark-mode") ? "#fff" : "#000",
-                    border: "1px solid #555",
-                    borderRadius: "5px",
-                    padding: "8px",
-                    fontSize: "14px"
-                  }}
-  wrapperStyle={{ outline: "none" }}
+                backgroundColor: document.body.classList.contains("dark-mode") ? "#333" : "#fff", // Dark mode: nền tối, Light mode: nền trắng
+                color: document.body.classList.contains("dark-mode") ? "#fff" : "#000", // Dark mode: chữ trắng, Light mode: chữ đen
+                border: "1px solid #777",
+                borderRadius: "5px",
+                padding: "10px",
+                fontSize: "16px"
+              }}
+              itemStyle={{
+                color: document.body.classList.contains("dark-mode") ? "#fff" : "#000", // Cập nhật màu chữ theo theme
+                fontSize: "14px"
+              }}
+              wrapperStyle={{
+                outline: "none"
+              }}
 />
 
 
@@ -147,7 +166,21 @@ const ProfileDetail = ({ username }) => {
             </Pie>
             <Tooltip
   formatter={(value) => `${value.toFixed(2)}%`}
-  contentStyle={getTooltipStyle()}
+  contentStyle={{
+    backgroundColor: document.body.classList.contains("dark-mode") ? "#333" : "#fff", // Dark mode: nền tối, Light mode: nền trắng
+    color: document.body.classList.contains("dark-mode") ? "#fff" : "#000", // Dark mode: chữ trắng, Light mode: chữ đen
+    border: "1px solid #777",
+    borderRadius: "5px",
+    padding: "10px",
+    fontSize: "16px"
+  }}
+  itemStyle={{
+    color: document.body.classList.contains("dark-mode") ? "#fff" : "#000", // Cập nhật màu chữ theo theme
+    fontSize: "14px"
+  }}
+  wrapperStyle={{
+    outline: "none"
+  }}
 />
             <Legend />
           </PieChart>
