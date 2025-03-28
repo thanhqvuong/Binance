@@ -1,118 +1,133 @@
 // Import các thư viện cần thiết
-import { useState } from "react"; // useState để quản lý state trong component
-import dayjs from "dayjs"; // dayjs để xử lý thời gian
-import "./CryptoTrade.css"; // Import file CSS để tạo style cho component
+import { useState, useEffect } from "react";
+import dayjs from "dayjs";
+import "./CryptoTrade.css";
 
-// Component chính của ứng dụng
 const CryptoExchange = () => {
-  // State để kiểm tra người dùng đang chọn mua hay bán
   const [isBuying, setIsBuying] = useState(true);
-  // State lưu số tiền nhập vào ô input
   const [amount, setAmount] = useState("");
+  const [balanceVND, setBalanceVND] = useState(0);
+  const [balanceUSDT, setBalanceUSDT] = useState(0);
 
-  // Tỉ giá USDT → VND
-  const rate = 25870; // 1 USDT = 25,870 VND
-  // Số tiền tối thiểu để mua và bán
-  const minBuy = 150000; // Tối thiểu mua 150,000 VND
-  const minSell = 1; // Tối thiểu bán 1 USDT
+  const rate = 25870;
+  const minBuy = 150000;
+  const minSell = 1;
 
-  // Hàm định dạng số tiền theo VND (thêm dấu phẩy ngăn cách hàng nghìn)
+  // Hàm lấy số dư từ localStorage
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    const username = storedUser.username;
+    const transactions = JSON.parse(localStorage.getItem("transactions") || "[]");
+
+    if (username) {
+      // Tính số dư VND
+      const totalVND =
+        transactions
+          .filter(tx => tx.username === username)
+          .reduce((sum, tx) => {
+            if (tx.type === "Nạp" || tx.type === "Bán") return sum + tx.amount;
+            if (tx.type === "Rút" || tx.type === "Mua") return sum - tx.amount;
+            return sum;
+          }, 0);
+
+      // Tính số dư USDT
+      const totalUSDT =
+        transactions
+          .filter(tx => tx.username === username)
+          .reduce((sum, tx) => {
+            if (tx.type === "Mua") return sum + tx.amount / rate;
+            if (tx.type === "Bán" || tx.type === "Nạp" || tx.type === "Rút") return sum - tx.amount / rate;
+            return sum;
+          }, 0);
+
+      setBalanceVND(totalVND);
+      setBalanceUSDT(parseFloat(totalUSDT.toFixed(2)));
+    }
+  }, []);
+
   const formatVND = (num) => num.toLocaleString("vi-VN").replace(/\./g, ",");
-
-  // Hàm định dạng số tiền theo USDT (luôn có 3 chữ số thập phân)
   const formatUSDT = (num) => parseFloat(num).toFixed(3);
 
-  // Hàm chuyển đổi giữa chế độ mua & bán
   const handleToggle = (buying) => {
-    setIsBuying(buying); // Cập nhật trạng thái mua/bán
-    setAmount(""); // Reset input khi chuyển đổi
+    setIsBuying(buying);
+    setAmount("");
   };
 
-  // Xử lý khi người dùng nhập vào ô input
   const handleInputChange = (e) => {
-    let value = e.target.value; // Lấy giá trị nhập vào
-
+    let value = e.target.value;
     if (isBuying) {
-      value = value.replace(/\D/g, ""); // Chỉ cho phép nhập số khi mua
-      setAmount(value ? formatVND(parseInt(value, 10)) : ""); // Định dạng lại số tiền theo VND
+      value = value.replace(/\D/g, "");
+      setAmount(value ? formatVND(parseInt(value, 10)) : "");
     } else {
-      if (/^\d*\.?\d*$/.test(value)) { // Kiểm tra nhập số hợp lệ khi bán
+      if (/^\d*\.?\d*$/.test(value)) {
         setAmount(value);
       }
     }
   };
 
-  // Xử lý số tiền thực tế dựa vào giá trị nhập vào
   const rawAmount = isBuying
-    ? Math.max(0, parseInt(amount.replace(/\D/g, ""), 10) || 0) // Nếu mua, lấy số nguyên từ VND
-    : parseFloat(amount) || 0; // Nếu bán, lấy số thực từ USDT
+    ? Math.max(0, parseInt(amount.replace(/\D/g, ""), 10) || 0)
+    : parseFloat(amount) || 0;
 
-  // Tính toán số tiền nhận được khi mua/bán
   const receivedAmount = isBuying
-    ? formatUSDT(rawAmount / rate) // Nếu mua: chuyển đổi từ VND sang USDT
-    : formatVND(Math.floor(rawAmount * rate)); // Nếu bán: chuyển đổi từ USDT sang VND
+    ? formatUSDT(rawAmount / rate)
+    : formatVND(Math.floor(rawAmount * rate));
 
-  // Xử lý giao dịch khi nhấn nút "Mua USDT" hoặc "Bán USDT"
   const handleTransaction = () => {
-    const storedUser = JSON.parse(localStorage.getItem("user") || "{}"); // Lấy thông tin user từ localStorage
-    const username = storedUser.username; // Lấy username của user
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    const username = storedUser.username;
 
-    if (!username) { // Kiểm tra nếu user chưa đăng nhập
-      alert("Vui lòng đăng nhập để thực hiện giao dịch."); // Hiển thị thông báo yêu cầu đăng nhập
+    if (!username) {
+      alert("Vui lòng đăng nhập để thực hiện giao dịch.");
       return;
     }
 
-    if (rawAmount < (isBuying ? minBuy : minSell)) return; // Kiểm tra số tiền có đạt mức tối thiểu không
+    if (rawAmount < (isBuying ? minBuy : minSell)) return;
 
-    // Tạo đối tượng giao dịch mới
+    // Kiểm tra số dư trước khi giao dịch
+    if (isBuying && rawAmount > balanceVND) {
+      alert("Số dư VND không đủ, vui lòng nạp thêm.");
+      return;
+    }
+
+    if (!isBuying && rawAmount > balanceUSDT) {
+      alert("Số dư USDT không đủ, vui lòng nạp thêm.");
+      return;
+    }
+
     const newTransaction = {
       username,
-      type: isBuying ? "Mua" : "Bán", // Loại giao dịch
-      amount: isBuying
-        ? rawAmount // Nếu mua: giữ nguyên VND
-        : Math.round(rawAmount * rate), // Nếu bán: chuyển USDT → VND
-      currency: "VND", // Đơn vị tiền tệ
-      time: dayjs().format("YYYY-MM-DD HH:mm"), // Lưu thời gian giao dịch
+      type: isBuying ? "Mua" : "Bán",
+      amount: isBuying ? rawAmount : Math.round(rawAmount * rate),
+      currency: "VND",
+      time: dayjs().format("YYYY-MM-DD HH:mm"),
     };
 
-    // Lấy danh sách giao dịch cũ từ localStorage
     const storedTransactions = JSON.parse(localStorage.getItem("transactions") || "[]");
-    const updatedTransactions = [...storedTransactions, newTransaction]; // Cập nhật danh sách giao dịch mới
-
-    // Lưu lại danh sách giao dịch vào localStorage
+    const updatedTransactions = [...storedTransactions, newTransaction];
     localStorage.setItem("transactions", JSON.stringify(updatedTransactions));
 
-    console.log("Giao dịch đã được lưu:", newTransaction); // Log giao dịch vào console
+    console.log("Giao dịch đã được lưu:", newTransaction);
 
-    setAmount(""); // Reset ô nhập liệu sau giao dịch
+    setAmount("");
+    setBalanceVND(prev => (isBuying ? prev - rawAmount : prev + Math.round(rawAmount * rate)));
+    setBalanceUSDT(prev => (isBuying ? prev + rawAmount / rate : prev - rawAmount));
   };
 
   return (
     <div className="crypto-trade-container">
-      {/* Phần thông tin thị trường */}
       <div className="crypto-trade-info">
         <h1>{isBuying ? "Mua tiền mã hóa" : "Bán tiền mã hóa"}</h1>
-        <div className="crypto-list">
-          <h2>Tiền mã hóa phổ biến</h2>
-          <ul>
-            <li>BNB <span className="negative">₫14,743,779 -3.78%</span></li>
-            <li>BTC <span className="negative">₫2,159,072,573 -2.26%</span></li>
-            <li>ETH <span className="negative">₫54,683,460 -2.19%</span></li>
-            <li>ADA <span className="negative">₫19,845 -5.65%</span></li>
-            <li>XRP <span className="negative">₫57,117 -5.55%</span></li>
-          </ul>
-        </div>
+        <h3>Số dư VND: {formatVND(balanceVND)} VND</h3>
+        <h3>Số dư USDT: {formatUSDT(balanceUSDT)} USDT</h3>
       </div>
 
-      {/* Phần giao dịch mua/bán */}
       <div className="exchange-section">
-        {/* Tabs chuyển đổi giữa Mua & Bán */}
         <div className="tabs">
           <button className={isBuying ? "active" : ""} onClick={() => handleToggle(true)}>Mua</button>
           <button className={!isBuying ? "active" : ""} onClick={() => handleToggle(false)}>Bán</button>
         </div>
 
-        {/* Ô nhập tiền và hiển thị số tiền nhận được */}
         <div className="exchange-trade-box">
           <div className="input-trade-group">
             <span>Chi</span>
@@ -126,14 +141,12 @@ const CryptoExchange = () => {
             <span>{isBuying ? "USDT" : "VND"}</span>
           </div>
 
-          {/* Hiển thị cảnh báo nếu số tiền dưới mức tối thiểu */}
           {rawAmount > 0 && rawAmount < (isBuying ? minBuy : minSell) && (
             <p className="error-message">
               {isBuying ? `Tối thiểu mua: ${formatVND(minBuy)} VND` : `Tối thiểu bán: ${minSell} USDT`}
             </p>
           )}
 
-          {/* Nút thực hiện giao dịch */}
           <button 
             className={`submit-btn ${rawAmount >= (isBuying ? minBuy : minSell) ? "active" : ""}`} 
             disabled={rawAmount < (isBuying ? minBuy : minSell)}
@@ -147,4 +160,4 @@ const CryptoExchange = () => {
   );
 };
 
-export default CryptoExchange; // Xuất component để sử dụng ở nơi khác
+export default CryptoExchange;
