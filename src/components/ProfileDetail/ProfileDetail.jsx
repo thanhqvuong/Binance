@@ -64,16 +64,13 @@ const ProfileDetail = ({ username }) => {
   }, []); // Chạy chỉ một lần khi component mount
 
   // Hàm thiết lập kiểu tooltip (phụ thuộc vào chế độ sáng/tối)
-  const getTooltipStyle = () => {
-    const isDarkMode = document.body.classList.contains("dark-mode");
-    return {
-      backgroundColor: isDarkMode ? "#222" : "#fff", // Nền tối hơn để phù hợp với dark mode
-      color: isDarkMode ? "#fff" : "#000", // Chữ trắng trong dark mode
-      border: `1px solid ${isDarkMode ? "#555" : "#ccc"}`, // Viền mềm mại hơn
-      borderRadius: "8px",
-      padding: "10px",
-    };
-  };
+  const getTooltipStyle = () => ({
+    backgroundColor: isDarkMode ? "#222" : "#fff",
+    color: isDarkMode ? "#fff" : "#000",
+    border: `1px solid ${isDarkMode ? "#555" : "#ccc"}`,
+    borderRadius: "8px",
+    padding: "10px",
+  });
 
   return (
     <div className="profile-container">
