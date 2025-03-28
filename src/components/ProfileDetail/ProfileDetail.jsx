@@ -9,55 +9,32 @@ const ProfileDetail = ({ username }) => {
   const [depositWithdrawData, setDepositWithdrawData] = useState([]);
   const [buySellData, setBuySellData] = useState([]);
   const [totalData, setTotalData] = useState([]);
-  const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem("theme") === "dark");
+  const getTheme = () => localStorage.getItem("theme") === "dark";
+  const [isDarkMode, setIsDarkMode] = useState(getTheme());
+
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-
-    if (storedUser) {
-      const allTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
-      const userTransactions = allTransactions.filter(
-        (tx) => tx.username.toLowerCase() === storedUser.username.toLowerCase()
-      );
-
-      const processTransactions = (transactions, types, convert = false) => {
-        return transactions
-          .filter((tx) => types.includes(tx.type))
-          .reduce((acc, tx) => {
-            const value = convert ? tx.amount * EXCHANGE_RATE : tx.amount;
-            const existing = acc.find((item) => item.name === tx.type);
-            if (existing) {
-              existing.value += value;
-            } else {
-              acc.push({ name: tx.type, value });
-            }
-            return acc;
-          }, []);
-      };
-
-      const depositWithdraw = processTransactions(userTransactions, ["Nạp", "Rút"]);
-      const buySell = processTransactions(userTransactions, ["Mua", "Bán"]);
-      const total = [...depositWithdraw, ...buySell];
-
-      const totalSum = total.reduce((sum, tx) => sum + tx.value, 0);
-      const totalPercentageData = total.map((tx) => ({
-        name: tx.name,
-        value: totalSum > 0 ? (tx.value / totalSum) * 100 : 0,
-      }));
-
-      setDepositWithdrawData(depositWithdraw);
-      setBuySellData(buySell);
-      setTotalData(totalPercentageData);
-    }
-  }, []);
-
-  useEffect(() => {
-    const handleStorageChange = () => {
+    const handleThemeChange = () => {
       setIsDarkMode(localStorage.getItem("theme") === "dark");
     };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+  
+    // Theo dõi thay đổi theme khi đổi trong tab khác
+    window.addEventListener("storage", handleThemeChange);
+  
+    // Theo dõi thay đổi trực tiếp trong cùng tab (nếu theme được lưu vào class của body)
+    const observer = new MutationObserver(handleThemeChange);
+    observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+  
+    // Kiểm tra localStorage mỗi giây để cập nhật ngay lập tức
+    const interval = setInterval(() => {
+      handleThemeChange();
+    }, 1000);
+  
+    return () => {
+      window.removeEventListener("storage", handleThemeChange);
+      observer.disconnect();
+      clearInterval(interval);
+    };
   }, []);
 
   const getTooltipStyle = () => ({
@@ -67,6 +44,7 @@ const ProfileDetail = ({ username }) => {
     borderRadius: "5px",
     padding: "10px",
     fontSize: "16px",
+    fontWeight: "bold",
   });
 
   return (
@@ -83,7 +61,11 @@ const ProfileDetail = ({ username }) => {
                   <Cell key={tx.name} fill={COLORS[tx.name]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => value.toLocaleString("vi-VN")} contentStyle={getTooltipStyle()} />
+              <Tooltip
+                formatter={(value) => value.toLocaleString("vi-VN")}
+                contentStyle={getTooltipStyle()}
+                itemStyle={{ color: isDarkMode ? "#fff" : "#000", fontWeight: "bold" }}
+              />
               <Legend />
             </PieChart>
           </ResponsiveContainer>
@@ -99,8 +81,9 @@ const ProfileDetail = ({ username }) => {
                 ))}
               </Pie>
               <Tooltip
-                formatter={(value) => (typeof value === "number" ? (value / 25870).toFixed(2) : value)}
+                formatter={(value) => (typeof value === "number" ? (value / EXCHANGE_RATE).toFixed(2) : value)}
                 contentStyle={getTooltipStyle()}
+                itemStyle={{ color: isDarkMode ? "#fff" : "#000", fontWeight: "bold" }}
               />
               <Legend />
             </PieChart>
@@ -117,7 +100,11 @@ const ProfileDetail = ({ username }) => {
                 <Cell key={tx.name} fill={COLORS[tx.name]} />
               ))}
             </Pie>
-            <Tooltip formatter={(value) => `${value.toFixed(2)}%`} contentStyle={getTooltipStyle()} />
+            <Tooltip
+              formatter={(value) => `${value.toFixed(2)}%`}
+              contentStyle={getTooltipStyle()}
+              itemStyle={{ color: isDarkMode ? "#fff" : "#000", fontWeight: "bold" }}
+            />
             <Legend />
           </PieChart>
         </ResponsiveContainer>
