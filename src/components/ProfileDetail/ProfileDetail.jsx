@@ -64,13 +64,17 @@ const ProfileDetail = ({ username }) => {
   }, []); // Chạy chỉ một lần khi component mount
 
   // Hàm thiết lập kiểu tooltip (phụ thuộc vào chế độ sáng/tối)
-  const getTooltipStyle = () => ({
-    backgroundColor: document.body.classList.contains("dark-mode") ? "#333" : "#fff",
-    color: document.body.classList.contains("dark-mode") ? "#fff" : "#000",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
-    padding: "5px"
-  });
+  const getTooltipStyle = () => {
+    return {
+      backgroundColor: document.body.classList.contains("dark-mode") ? "#222" : "#fff",
+      color: document.body.classList.contains("dark-mode") ? "#fff" : "#000",
+      border: "1px solid #555",
+      borderRadius: "5px",
+      padding: "8px",
+      fontSize: "14px"
+    };
+  };
+  
 
   return (
     <div className="profile-container">
@@ -87,7 +91,12 @@ const ProfileDetail = ({ username }) => {
                   <Cell key={tx.name} fill={COLORS[tx.name]} /> // Màu sắc theo loại giao dịch
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => value.toLocaleString("vi-VN")} contentStyle={getTooltipStyle()} />
+              <Tooltip 
+  formatter={(value) => value.toLocaleString("vi-VN")} 
+  contentStyle={getTooltipStyle()} 
+  wrapperStyle={{ outline: "none" }} 
+/>
+
               <Legend />
             </PieChart>
           </ResponsiveContainer>
@@ -103,7 +112,19 @@ const ProfileDetail = ({ username }) => {
                   <Cell key={tx.name} fill={COLORS[tx.name]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => value.toFixed(2)} contentStyle={getTooltipStyle()} />
+              <Tooltip
+  formatter={(value) => value.toFixed(2)}
+  contentStyle={{
+    backgroundColor: document.body.classList.contains("dark-mode") ? "#222" : "#fff",
+    color: document.body.classList.contains("dark-mode") ? "#fff" : "#000",
+    border: "1px solid #555",
+    borderRadius: "5px",
+    padding: "8px",
+    fontSize: "14px"
+  }}
+  wrapperStyle={{ outline: "none" }}
+/>
+
               <Legend />
             </PieChart>
           </ResponsiveContainer>
@@ -120,7 +141,10 @@ const ProfileDetail = ({ username }) => {
                 <Cell key={tx.name} fill={COLORS[tx.name]} />
               ))}
             </Pie>
-            <Tooltip formatter={(value) => `${value.toFixed(2)}%`} contentStyle={getTooltipStyle()} />
+            <Tooltip
+  formatter={(value) => `${value.toFixed(2)}%`}
+  contentStyle={getTooltipStyle()}
+/>
             <Legend />
           </PieChart>
         </ResponsiveContainer>
