@@ -113,7 +113,7 @@ const ProfileDetail = ({ username }) => {
                 ))}
               </Pie>
               <Tooltip
-  formatter={(value) => value.toFixed(2)}
+  formatter={(value) => (value / 25870).toFixed(2)}
   contentStyle={{
     backgroundColor: document.body.classList.contains("dark-mode") ? "#222" : "#fff",
     color: document.body.classList.contains("dark-mode") ? "#fff" : "#000",
@@ -124,6 +124,7 @@ const ProfileDetail = ({ username }) => {
   }}
   wrapperStyle={{ outline: "none" }}
 />
+
 
               <Legend />
             </PieChart>

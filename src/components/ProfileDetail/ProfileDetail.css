@@ -67,9 +67,10 @@ h2, h3 {
 
 /* Tooltip styles */
 .recharts-tooltip-wrapper {
-  background: var(--tooltip-bg) !important;
+  background-color: var(--tooltip-bg) !important;
   color: var(--tooltip-text) !important;
   border-radius: 5px;
   padding: 8px;
   border: 1px solid var(--border-color);
+  box-shadow: 0px 2px 5px var(--shadow-color);
 }
