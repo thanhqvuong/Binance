@@ -13,12 +13,14 @@ const CryptoExchange = () => {
   const minBuy = 150000;
   const minSell = 1;
 
+  // Lấy số dư từ localStorage
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
     const username = storedUser.username;
     const transactions = JSON.parse(localStorage.getItem("transactions") || "[]");
 
     if (username) {
+      // Tính số dư VND
       const totalVND = transactions
         .filter(tx => tx.username === username)
         .reduce((sum, tx) => {
@@ -27,6 +29,7 @@ const CryptoExchange = () => {
           return sum;
         }, 0);
 
+      // Tính số dư USDT (chỉ tính Mua - Bán)
       const totalUSDT = transactions
         .filter(tx => tx.username === username)
         .reduce((sum, tx) => {
@@ -85,7 +88,7 @@ const CryptoExchange = () => {
     }
 
     if (!isBuying && rawAmount > balanceUSDT) {
-      alert("Số dư USDT không đủ, vui lòng nạp thêm.");
+      alert(`Số dư USDT không đủ. Bạn chỉ có ${formatUSDT(balanceUSDT)} USDT.`);
       return;
     }
 
@@ -104,8 +107,14 @@ const CryptoExchange = () => {
     console.log("Giao dịch đã được lưu:", newTransaction);
 
     setAmount("");
-    setBalanceVND(prev => (isBuying ? prev - rawAmount : prev + Math.round(rawAmount * rate)));
-    setBalanceUSDT(prev => (isBuying ? prev + rawAmount / rate : prev - rawAmount / rate));
+
+    if (isBuying) {
+      setBalanceVND(prev => prev - rawAmount);
+      setBalanceUSDT(prev => prev + rawAmount / rate);
+    } else {
+      setBalanceUSDT(prev => prev - rawAmount);
+      setBalanceVND(prev => prev + Math.round(rawAmount * rate));
+    }
   };
 
   return (
