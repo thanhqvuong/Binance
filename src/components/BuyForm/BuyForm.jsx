@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import "./BuyForm.css";
 
-const USDT_RATE = 25870;
+const USDT_RATE = 25870; // Tỷ giá 1 USDT = 25,870 VND
 
 const BuyForm = () => {
   const [vnd, setVnd] = useState(150000);
@@ -17,8 +17,10 @@ const BuyForm = () => {
     loadUserData();
   }, []);
 
+  // ✅ Format số tiền có dấu `,` phân cách hàng nghìn
   const formatCurrency = (value) => value.toLocaleString("vi-VN").replace(/\./g, ",");
 
+  // ✅ Load dữ liệu user & tính số dư theo công thức mới: (Nạp + Bán) - (Mua + Rút)
   const loadUserData = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (!storedUser) return;
@@ -27,25 +29,30 @@ const BuyForm = () => {
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
     const userTransactions = transactions.filter(tx => tx.username === storedUser.username);
 
+    // 🔹 Tính số dư đúng công thức
     let totalVND = userTransactions.reduce((acc, tx) => {
-      if (tx.type === "Nạp") return acc + tx.amount;
-      if (tx.type === "Rút") return acc - tx.amount;
+      if (tx.type === "Nạp" || tx.type === "Bán") return acc + tx.amount;
+      if (tx.type === "Mua" || tx.type === "Rút") return acc - tx.amount;
       return acc;
     }, 0);
+    
     setBalance(totalVND);
 
+    // 🔹 Kiểm tra gói định kỳ đã đăng ký
     const storedSubscription = JSON.parse(localStorage.getItem("subscription"));
     if (storedSubscription?.username === storedUser.username) {
       setSubscription(storedSubscription);
       setUsdtAmount(storedSubscription.vndAmount / USDT_RATE);
       setIsConfirmed(!!storedSubscription.lastPurchase);
 
+      // Kiểm tra nếu hôm nay đã mua thì báo `đã mua`
       if (storedSubscription.lastPurchase && dayjs(storedSubscription.lastPurchase).isSame(dayjs(), "day")) {
         setAlreadyPurchased(true);
       }
     }
   };
 
+  // ✅ Chọn gói định kỳ
   const handleSubscriptionChange = (plan) => {
     if (balance < vnd) {
       alert("❌ Số dư không đủ!");
@@ -64,6 +71,7 @@ const BuyForm = () => {
     setAlreadyPurchased(false);
   };
 
+  // ✅ Xác nhận mua USDT theo gói định kỳ
   const confirmSubscription = () => {
     if (!subscription) return;
 
@@ -87,8 +95,10 @@ const BuyForm = () => {
     setAlreadyPurchased(true);
 
     alert(`✅ Bạn đã mua gói ${subscription.plan} với ${usdtAmount.toFixed(3)} USDT!`);
+    loadUserData(); // Cập nhật lại số dư sau giao dịch
   };
 
+  // ✅ Hủy gói định kỳ
   const cancelSubscription = () => {
     localStorage.removeItem("subscription");
     setSubscription(null);
@@ -96,6 +106,7 @@ const BuyForm = () => {
     setAlreadyPurchased(false);
   };
 
+  // ✅ Thay đổi số lượng USDT mua
   const changeUSDT = (amount) => {
     const newAmount = usdtAmount + amount;
     if (newAmount < 1) return;
