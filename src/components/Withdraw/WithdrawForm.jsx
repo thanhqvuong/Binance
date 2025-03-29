@@ -32,14 +32,14 @@ const WithdrawForm = () => {
 
   // 📌 Xử lý nhập số tiền có dấu `,` phân cách hàng nghìn
   const handleAmountChange = (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // Chỉ giữ số
-  
+    let value = e.target.value.replace(/\D/g, ""); // Loại bỏ ký tự không phải số
     if (!value) {
       setAmount("");
       return;
     }
   
-    let formattedValue = parseInt(value, 10).toLocaleString("vi-VN"); // Định dạng lại số
+    // Định dạng số với dấu `,` thay vì dấu `.`
+    let formattedValue = parseInt(value, 10).toLocaleString("vi-VN").replace(/\./g, ",");
     setAmount(formattedValue);
   };
   
@@ -86,7 +86,8 @@ const WithdrawForm = () => {
     <div className="withdraw-container">
       <h2>Rút tiền</h2>
 
-      <p><strong>Số dư hiện tại:</strong> {balance.toLocaleString("vi-VN")} VND</p>
+      <p><strong>Số dư hiện tại:</strong> {balance.toLocaleString("vi-VN").replace(/\./g, ",")} VND</p>
+
 
       {balance > 0 && (
         <>
