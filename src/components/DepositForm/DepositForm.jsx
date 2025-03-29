@@ -1,47 +1,46 @@
-import React, { useState } from "react"; // Import React và useState để quản lý trạng thái
-import { useNavigate } from "react-router-dom"; // Import useNavigate để điều hướng trang
-import dayjs from "dayjs"; // Import dayjs để xử lý thời gian
-import "./DepositForm.css"; // Import file CSS để tạo kiểu dáng
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import "./DepositForm.css";
 
 const DepositForm = () => {
-  const navigate = useNavigate(); // Hook điều hướng trang
-  const [showInput, setShowInput] = useState(false); // Trạng thái hiển thị ô nhập số tiền
-  const [amount, setAmount] = useState(""); // Trạng thái lưu số tiền nhập vào
+  const navigate = useNavigate();
+  const [showInput, setShowInput] = useState(false);
+  const [amount, setAmount] = useState("");
 
   // Lấy thông tin user từ localStorage
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const username = storedUser?.username || "";
 
-  // 📌 Xử lý nhập số tiền có dấu `,` phân cách hàng nghìn
+  // Xử lý nhập số tiền, tự động thêm dấu ","
   const handleAmountChange = (e) => {
     let value = e.target.value.replace(/\D/g, ""); // Chỉ giữ số
     if (!value) {
       setAmount("");
       return;
     }
-    
-    let formattedValue = parseInt(value, 10).toLocaleString("vi-VN"); // Định dạng số
+
+    let formattedValue = parseInt(value, 10).toLocaleString("vi-VN"); // Thêm dấu ","
     setAmount(formattedValue);
   };
 
   // Xử lý khi nhấn nút nạp tiền
   const handleDeposit = () => {
-    if (!username) { // Kiểm tra nếu user chưa đăng nhập
+    if (!username) {
       alert("Bạn cần đăng nhập trước khi nạp tiền!");
       return;
     }
 
-    const parsedAmount = Number(amount.replace(/,/g, "")); // Chuyển về số nguyên
+    // Chuyển amount từ "5,000,000" về "5000000"
+    const parsedAmount = Number(amount.replace(/,/g, ""));
 
-    if (!amount || isNaN(parsedAmount) || parsedAmount <= 0 || !Number.isInteger(parsedAmount)) {
+    if (!parsedAmount || parsedAmount <= 0 || !Number.isInteger(parsedAmount)) {
       alert("Vui lòng nhập số tiền hợp lệ (số nguyên dương)!");
       return;
     }
 
-    // Lấy thời gian hiện tại bằng dayjs
     const formattedTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
 
-    // Tạo object giao dịch
     const newTransaction = {
       username,
       type: "Nạp",
@@ -50,11 +49,8 @@ const DepositForm = () => {
       time: formattedTime,
     };
 
-    // Lấy danh sách giao dịch từ localStorage (nếu chưa có thì tạo mảng rỗng)
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
     transactions.push(newTransaction);
-
-    // Lưu danh sách giao dịch vào localStorage
     localStorage.setItem("transactions", JSON.stringify(transactions));
 
     alert(`✅ Bạn đã nạp ${parsedAmount.toLocaleString("vi-VN")} VND thành công!`);
