@@ -14,19 +14,17 @@ const DepositForm = () => {
 
   // Xử lý nhập số tiền, tự động thêm dấu ","
   const handleAmountChange = (e) => {
-    let value = e.target.value.replace(/[^\d,]/g, ""); // Chỉ giữ số và dấu ","
-    value = value.replace(/,/g, ""); // Xóa dấu ","
-    
+    let value = e.target.value.replace(/[^\d]/g, ""); // Chỉ giữ số
+  
     if (!value) {
       setAmount("");
       return;
     }
   
-    let formattedValue = Number(value).toLocaleString("vi-VN"); // Format lại số
+    let formattedValue = Number(value).toLocaleString("en-US"); // Format số với dấu phẩy
     setAmount(formattedValue);
   };
   
-
   // Xử lý khi nhấn nút nạp tiền
   const handleDeposit = () => {
     if (!username) {
