@@ -19,8 +19,8 @@ const DepositForm = () => {
       setAmount("");
       return;
     }
-
-    let formattedValue = parseInt(value, 10).toLocaleString("vi-VN"); // Thêm dấu ","
+  
+    let formattedValue = parseInt(value, 10).toLocaleString("vi-VN"); // Format đúng chuẩn
     setAmount(formattedValue);
   };
 
