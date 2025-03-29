@@ -14,15 +14,18 @@ const DepositForm = () => {
 
   // Xử lý nhập số tiền, tự động thêm dấu ","
   const handleAmountChange = (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // Chỉ giữ số
+    let value = e.target.value.replace(/[^\d,]/g, ""); // Chỉ giữ số và dấu ","
+    value = value.replace(/,/g, ""); // Xóa dấu ","
+    
     if (!value) {
       setAmount("");
       return;
     }
   
-    let formattedValue = parseInt(value, 10).toLocaleString("vi-VN"); // Format đúng chuẩn
+    let formattedValue = Number(value).toLocaleString("vi-VN"); // Format lại số
     setAmount(formattedValue);
   };
+  
 
   // Xử lý khi nhấn nút nạp tiền
   const handleDeposit = () => {
@@ -30,17 +33,16 @@ const DepositForm = () => {
       alert("Bạn cần đăng nhập trước khi nạp tiền!");
       return;
     }
-
-    // Chuyển amount từ "5,000,000" về "5000000"
-    const parsedAmount = Number(amount.replace(/,/g, ""));
-
-    if (!parsedAmount || parsedAmount <= 0 || !Number.isInteger(parsedAmount)) {
-      alert("Vui lòng nhập số tiền hợp lệ (số nguyên dương)!");
+  
+    const parsedAmount = Number(amount.replace(/,/g, "")); // Chuyển "5,000,000" → 5000000
+  
+    if (!parsedAmount || parsedAmount < 50000 || !Number.isInteger(parsedAmount)) {
+      alert("Vui lòng nhập số tiền hợp lệ (số nguyên dương, tối thiểu 50,000 VND)!");
       return;
     }
-
+  
     const formattedTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
-
+  
     const newTransaction = {
       username,
       type: "Nạp",
@@ -48,16 +50,16 @@ const DepositForm = () => {
       currency: "VND",
       time: formattedTime,
     };
-
+  
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
     transactions.push(newTransaction);
     localStorage.setItem("transactions", JSON.stringify(transactions));
-
+  
     alert(`✅ Bạn đã nạp ${parsedAmount.toLocaleString("vi-VN")} VND thành công!`);
     setShowInput(false);
     setAmount("");
   };
-
+  
   return (
     <div className="deposit-container">
       <h2>Nạp</h2>
