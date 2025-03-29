@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import "./P2PExchange.css";
 
 const P2PExchange = () => {
-  const [tab, setTab] = useState("buy"); // State để xác định đang ở tab Mua hay Bán
+  const [tab, setTab] = useState("buy"); // Xác định tab đang chọn (Mua/Bán)
   const [amountVND, setAmountVND] = useState(""); // Số tiền nhập vào (VND)
   const [amountUSDT, setAmountUSDT] = useState(""); // Số tiền nhập vào (USDT)
   const [balanceVND, setBalanceVND] = useState(0); // Số dư VND
@@ -14,12 +14,11 @@ const P2PExchange = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const username = storedUser?.username || "";
 
-  // Load số dư khi component được mount
   useEffect(() => {
-    loadBalances();
+    loadBalances(); // Load số dư khi component mount
   }, []);
 
-  // Hàm load số dư từ localStorage dựa vào lịch sử giao dịch
+  // Hàm tính toán số dư từ localStorage
   const loadBalances = () => {
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
     let totalVND = 0;
@@ -37,54 +36,59 @@ const P2PExchange = () => {
       }
     });
 
-    setBalanceVND(Math.max(0, totalVND)); // Số dư VND không được nhỏ hơn 0
-    setBalanceUSDT(Math.max(0, totalUSDT)); // Số dư USDT không được nhỏ hơn 0
+    setBalanceVND(Math.max(0, totalVND));
+    setBalanceUSDT(Math.max(0, totalUSDT));
   };
 
-  // Hàm định dạng số có dấu phẩy phân cách hàng nghìn (VD: 1,000,000)
+  // Định dạng số có dấu phẩy (1,000,000)
   const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  // Xử lý nhập số tiền VND (chỉ cho phép nhập số)
+  // Xử lý nhập số VND (chỉ nhận số nguyên)
   const handleVNDPurchase = (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // Xóa ký tự không phải số
+    let value = e.target.value.replace(/\D/g, "");
     if (!value) {
       setAmountVND("");
       setAmountUSDT("");
       return;
     }
     let vndValue = parseInt(value, 10);
-    setAmountVND(formatNumber(vndValue)); // Định dạng lại số VND
+    setAmountVND(formatNumber(vndValue));
     setAmountUSDT((vndValue / rate).toFixed(3)); // Quy đổi sang USDT
   };
 
-  // Xử lý nhập số USDT (chỉ cho phép nhập số và dấu chấm)
+  // Xử lý nhập số USDT (cho phép số thập phân)
   const handleUSDTInput = (e) => {
-    let value = e.target.value.replace(/[^0-9.]/g, ""); // Xóa ký tự không hợp lệ
-    if (!value) {
-      setAmountUSDT("");
-      setAmountVND("");
-      return;
-    }
-    let usdtValue = parseFloat(value);
-    setAmountUSDT(usdtValue);
-    setAmountVND(formatNumber((usdtValue * rate).toFixed(0))); // Quy đổi sang VND
+    let value = e.target.value;
+
+    // Chỉ cho phép nhập số và một dấu `.`
+    value = value.replace(/[^0-9.]/g, "");
+    if (value.startsWith(".")) value = "0" + value;
+    if (value.split(".").length > 2) value = value.slice(0, -1);
+
+    // Giới hạn tối đa 3 số sau dấu `.`
+    let [integer, decimal] = value.split(".");
+    if (decimal && decimal.length > 3) decimal = decimal.slice(0, 3);
+    value = decimal ? `${integer}.${decimal}` : integer;
+
+    setAmountUSDT(value);
+    setAmountVND(formatNumber((parseFloat(value) * rate).toFixed(0))); // Quy đổi sang VND
   };
 
   // Kiểm tra điều kiện để nút "Mua/Bán" có thể bấm được
   const canSubmit =
-    (tab === "buy" && Number(amountVND.replace(/,/g, "")) >= 150000) || // Mua tối thiểu 150,000 VND
-    (tab === "sell" && parseFloat(amountUSDT) >= 1); // Bán tối thiểu 1 USDT
+    (tab === "buy" && Number(amountVND.replace(/,/g, "")) >= 150000) || 
+    (tab === "sell" && parseFloat(amountUSDT) >= 1);
 
-  // Hàm xử lý khi nhấn nút "Mua USDT" hoặc "Bán USDT"
+  // Xử lý giao dịch khi nhấn "Mua" hoặc "Bán"
   const handleSubmit = () => {
     if (!username) {
-      alert("Bạn cần đăng nhập để thực hiện giao dịch!");
+      alert("Bạn cần đăng nhập để giao dịch!");
       return;
     }
 
     let vndAmount = Number(amountVND.replace(/,/g, ""));
     let usdtAmount = parseFloat(amountUSDT);
-    let now = dayjs().format("YYYY-MM-DD HH:mm:ss"); // Lấy thời gian hiện tại
+    let now = dayjs().format("YYYY-MM-DD HH:mm:ss");
 
     if (tab === "buy") {
       if (vndAmount > balanceVND) {
@@ -124,18 +128,14 @@ const P2PExchange = () => {
       <div className="p2p-left">
         <h1>Giao dịch nhanh P2P</h1>
         <h2>{tab === "buy" ? "Mua USDT bằng VND" : "Bán USDT lấy VND"}</h2>
-        <p>Mua và bán USDT trên Binance P2P với nhiều phương thức thanh toán khác nhau</p>
+        <p>Mua và bán USDT trên Binance P2P với nhiều phương thức thanh toán</p>
         <p><strong>Số dư VND:</strong> {formatNumber(balanceVND)} VND</p>
         <p><strong>Số dư USDT:</strong> {balanceUSDT.toFixed(3)} USDT</p>
       </div>
       <div className="p2p-right">
         <div className="tab">
-          <button className={tab === "buy" ? "active" : ""} onClick={() => setTab("buy")}>
-            Mua
-          </button>
-          <button className={tab === "sell" ? "active" : ""} onClick={() => setTab("sell")}>
-            Bán
-          </button>
+          <button className={tab === "buy" ? "active" : ""} onClick={() => setTab("buy")}>Mua</button>
+          <button className={tab === "sell" ? "active" : ""} onClick={() => setTab("sell")}>Bán</button>
         </div>
         <div className="input-container">
           <input
@@ -146,11 +146,7 @@ const P2PExchange = () => {
             className="input"
           />
         </div>
-        <div className="result">
-          {tab === "buy"
-            ? `Bạn nhận được: ${amountUSDT} USDT`
-            : `Bạn nhận được: ${amountVND} VND`}
-        </div>
+        <div className="result">{tab === "buy" ? `Bạn nhận: ${amountUSDT} USDT` : `Bạn nhận: ${amountVND} VND`}</div>
         <button onClick={handleSubmit} className={canSubmit ? "button active" : "button disabled"} disabled={!canSubmit}>
           {tab === "buy" ? "Mua USDT" : "Bán USDT"}
         </button>

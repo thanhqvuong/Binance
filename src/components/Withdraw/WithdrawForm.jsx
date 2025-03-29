@@ -1,48 +1,55 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs"; // 📌 Import thư viện Day.js để lấy thời gian chuẩn
+import dayjs from "dayjs";
 import "./WithdrawForm.css";
 
 const WithdrawForm = () => {
-  const navigate = useNavigate(); // 📌 Hook điều hướng trong React Router
-  const [showInput, setShowInput] = useState(false); // 📌 Trạng thái hiển thị ô nhập số tiền
-  const [amount, setAmount] = useState(""); // 📌 Lưu số tiền nhập vào
-  const [balance, setBalance] = useState(0); // 📌 Lưu số dư tài khoản
+  const navigate = useNavigate();
+  const [showInput, setShowInput] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [balance, setBalance] = useState(0);
 
-  // 📌 Lấy thông tin user từ localStorage
-  const storedUser = JSON.parse(localStorage.getItem("user")) || {}; 
-  const username = storedUser.username || ""; // 📌 Nếu không có user, trả về chuỗi rỗng
+  const storedUser = JSON.parse(localStorage.getItem("user")) || {};
+  const username = storedUser.username || "";
 
   useEffect(() => {
-    calculateBalance(); // 📌 Khi component mount, cập nhật số dư
+    calculateBalance();
   }, []);
 
-  // 📌 Tính toán số dư dựa trên lịch sử giao dịch
+  // 📌 Cập nhật số dư theo công thức mới: (Nạp + Bán) - (Mua + Rút)
   const calculateBalance = () => {
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-
-    // 📌 Lọc giao dịch theo username và tính tổng số dư
     let totalVND = transactions.reduce((acc, tx) => {
       if (tx.username === username) {
-        if (tx.type === "Nạp") return acc + tx.amount; // 📌 Cộng số tiền nạp
-        if (tx.type === "Rút") return acc - tx.amount; // 📌 Trừ số tiền rút
+        if (tx.type === "Nạp" || tx.type === "Bán") return acc + tx.amount;
+        if (tx.type === "Mua" || tx.type === "Rút") return acc - tx.amount;
       }
       return acc;
     }, 0);
 
-    setBalance(totalVND); // 📌 Cập nhật số dư vào state
+    setBalance(totalVND);
   };
 
-  // 📌 Xử lý rút tiền
+  // 📌 Xử lý nhập số tiền có dấu `,` phân cách hàng nghìn
+  const handleAmountChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // Chỉ giữ số
+    if (!value) {
+      setAmount("");
+      return;
+    }
+    
+    let formattedValue = parseInt(value, 10).toLocaleString("vi-VN"); // Định dạng số
+    setAmount(formattedValue);
+  };
+
   const handleWithdraw = () => {
     if (!username) {
       alert("Bạn cần đăng nhập trước khi rút tiền!");
       return;
     }
 
-    const parsedAmount = Number(amount);
-    
-    // 📌 Kiểm tra số tiền hợp lệ (phải là số nguyên dương, tối thiểu 50,000 VND)
+    const parsedAmount = Number(amount.replace(/,/g, "")); // Chuyển về số nguyên
+
     if (!amount || isNaN(parsedAmount) || parsedAmount < 50000 || !Number.isInteger(parsedAmount)) {
       alert("Vui lòng nhập số tiền hợp lệ (số nguyên dương, tối thiểu 50,000 VND)!");
       return;
@@ -53,39 +60,32 @@ const WithdrawForm = () => {
       return;
     }
 
-    // 📌 Lấy thời gian hiện tại bằng dayjs
     const formattedTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
 
-    // 📌 Tạo object giao dịch mới
     const newTransaction = {
-      username, // 📌 Lưu kèm username để quản lý nhiều user
-      type: "Rút", 
-      amount: parsedAmount, 
-      currency: "VND", 
-      time: formattedTime, 
+      username,
+      type: "Rút",
+      amount: parsedAmount,
+      currency: "VND",
+      time: formattedTime,
     };
 
-    // 📌 Lấy danh sách giao dịch từ localStorage
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-    transactions.push(newTransaction); // 📌 Thêm giao dịch mới
-
-    // 📌 Lưu lại vào localStorage
+    transactions.push(newTransaction);
     localStorage.setItem("transactions", JSON.stringify(transactions));
 
     alert(`✅ Bạn đã rút ${parsedAmount.toLocaleString("vi-VN")} VND thành công!`);
-    calculateBalance(); // 📌 Cập nhật số dư
-    setShowInput(false); // 📌 Ẩn input sau khi rút
-    setAmount(""); // 📌 Reset ô nhập tiền
+    calculateBalance();
+    setShowInput(false);
+    setAmount("");
   };
 
   return (
     <div className="withdraw-container">
       <h2>Rút tiền</h2>
 
-      {/* 📌 Hiển thị số dư với format VND */}
       <p><strong>Số dư hiện tại:</strong> {balance.toLocaleString("vi-VN")} VND</p>
 
-      {/* 📌 Chỉ hiển thị đơn vị tiền tệ nếu có số dư */}
       {balance > 0 && (
         <>
           <label>Loại tiền tệ</label>
@@ -112,11 +112,10 @@ const WithdrawForm = () => {
       ) : (
         <div className="withdraw-input">
           <input
-            type="number"
+            type="text"
             placeholder="Nhập số tiền rút"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            min="50000" // 📌 Giới hạn rút tối thiểu 50,000 VND
+            onChange={handleAmountChange}
           />
           <button className="confirm-button" onClick={handleWithdraw}>
             Xác nhận rút
