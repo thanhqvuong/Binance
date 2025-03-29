@@ -33,14 +33,16 @@ const WithdrawForm = () => {
   // 📌 Xử lý nhập số tiền có dấu `,` phân cách hàng nghìn
   const handleAmountChange = (e) => {
     let value = e.target.value.replace(/\D/g, ""); // Chỉ giữ số
+  
     if (!value) {
       setAmount("");
       return;
     }
-    
-    let formattedValue = parseInt(value, 10).toLocaleString("vi-VN"); // Định dạng số
+  
+    let formattedValue = parseInt(value, 10).toLocaleString("vi-VN"); // Định dạng lại số
     setAmount(formattedValue);
   };
+  
 
   const handleWithdraw = () => {
     if (!username) {
