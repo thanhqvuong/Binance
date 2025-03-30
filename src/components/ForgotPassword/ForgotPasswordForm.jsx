@@ -53,17 +53,23 @@ const ForgotPasswordForm = () => {
   const handleResetPassword = async (values) => {
     setLoading(true);
     try {
-      const patchURL = `${API_URL}?email=${userData.email}`;
-      const response = await fetch(patchURL, {
-        method: "PATCH",
+      // Gửi POST để tạo user mới với mật khẩu mới
+      const response = await fetch(API_URL, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: values.password }),
+        body: JSON.stringify({
+          username: userData.username, // Giữ nguyên username
+          email: userData.email,       // Giữ nguyên email
+          phone: userData.phone,       // Giữ nguyên phone
+          password: values.password,   // Cập nhật mật khẩu mới
+        }),
       });
 
       if (!response.ok) throw new Error("⚠️ Lỗi khi đặt lại mật khẩu");
       message.success("✅ Mật khẩu đã được đặt lại thành công!");
 
-      setTimeout(() => navigate("/login"), 2000);
+      // Ngay lập tức chuyển hướng sang trang login
+      navigate("/login");
     } catch (error) {
       message.error(error.message);
     } finally {
