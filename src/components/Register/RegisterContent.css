@@ -74,6 +74,12 @@ h1 {
   color: #aaa;
 }
 
+/* Fix placeholder color in dark mode */
+[data-theme="dark"] .ant-input::placeholder,
+[data-theme="dark"] .ant-input-password input::placeholder {
+  color: #bbb; /* Màu xám thay vì trắng */
+}
+
 .ant-alert {
   border-radius: 8px;
   font-size: 0.9rem;
