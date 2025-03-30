@@ -162,3 +162,14 @@ button:hover {
   background: #222;
   color: white;
 }
+/* ====== ALIGNING CHECKBOX AND LABEL ====== */
+.remember-me {
+  display: flex;
+  align-items: center;
+}
+
+.remember-me input[type="checkbox"] {
+  margin-right: 5px; /* Giảm khoảng cách giữa checkbox và label */
+  width: 16px;
+  height: 16px;
+}
