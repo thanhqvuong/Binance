@@ -33,18 +33,27 @@ const ForgotPasswordForm = () => {
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
+
+      if (!data || !data.data || !data.data.data) {
+        throw new Error("⚠️ Lỗi khi lấy dữ liệu từ API!");
+      }
+
       const user = data.data.data.find(
         (u) => u.email === values.identifier || u.phone === values.identifier
       );
 
       if (!user) {
-        message.error("❌ Tài khoản không tồn tại!");
+        // Nếu không tìm thấy tài khoản, hiển thị thông báo lỗi và không chuyển sang bước 2
+        message.error("❌ Tài khoản không tồn tại!");  // Hiển thị thông báo lỗi
+        setStep(1); // Giữ lại ở bước 1, không chuyển sang bước 2
       } else {
         setUserData(user);
-        setStep(2);
+        setStep(2); // Nếu tìm thấy tài khoản, chuyển qua bước 2
       }
     } catch (error) {
-      message.error("⚠️ Lỗi khi kiểm tra tài khoản!");
+      // Nếu có lỗi xảy ra, hiển thị thông báo lỗi và giữ lại ở bước 1
+      message.error(error.message || "⚠️ Lỗi khi kiểm tra tài khoản!");  // Hiển thị thông báo lỗi
+      setStep(1);
     } finally {
       setLoading(false);
     }
@@ -53,7 +62,7 @@ const ForgotPasswordForm = () => {
   const handleResetPassword = async (values) => {
     setLoading(true);
     try {
-      // Bước 1: Gửi POST để tạo user mới với mật khẩu mới
+      // Gửi POST để tạo user mới với mật khẩu mới
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -67,10 +76,9 @@ const ForgotPasswordForm = () => {
 
       if (!response.ok) throw new Error("⚠️ Lỗi khi đặt lại mật khẩu");
 
-      // Bước 3: Chuyển hướng đến trang login sau khi tạo tài khoản mới thành công
+      // Bước 3: Nếu tạo user mới thành công, chuyển hướng đến trang login
       message.success("✅ Mật khẩu đã được đặt lại thành công!");
-      navigate("/login");  // Chuyển hướng đến trang login
-
+      navigate("/login");
     } catch (error) {
       message.error(error.message);  // Hiển thị thông báo lỗi
     } finally {
