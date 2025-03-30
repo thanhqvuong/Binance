@@ -167,17 +167,19 @@ button:hover {
 .remember-me {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin-right: 10px; /* Khoảng cách giữa checkbox và label */
 }
 
 .remember-me input[type="checkbox"] {
-  margin-right: 5px; /* Giảm khoảng cách giữa checkbox và label */
+  margin-right: 5px; /* Khoảng cách giữa checkbox và text */
   width: 16px;
   height: 16px;
 }
 
-.remember-me label {
-  font-size: 14px;
-  margin: 0;
+/* ====== ALIGNING FORGOT PASSWORD LINK ====== */
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px; /* Thêm khoảng cách dưới cùng */
 }
-
