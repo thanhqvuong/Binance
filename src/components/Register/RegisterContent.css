@@ -7,6 +7,8 @@
   --input-bg-light: #fff;
   --input-border-dark: #555;
   --input-border-light: #ccc;
+  --placeholder-dark: rgba(180, 180, 180, 0.7); /* Xám nhạt */
+  --placeholder-light: rgba(100, 100, 100, 0.7); /* Xám đậm */
   --primary-gradient: linear-gradient(135deg, #007bff, #0056b3);
   --primary-gradient-hover: linear-gradient(135deg, #0056b3, #004080);
 }
@@ -17,6 +19,7 @@
   --text-color: var(--text-light);
   --input-bg: var(--input-bg-light);
   --input-border: var(--input-border-light);
+  --placeholder-color: var(--placeholder-light);
 }
 
 [data-theme="dark"] {
@@ -24,6 +27,7 @@
   --text-color: var(--text-dark);
   --input-bg: var(--input-bg-dark);
   --input-border: var(--input-border-dark);
+  --placeholder-color: var(--placeholder-dark);
 }
 
 .register-container {
@@ -69,22 +73,12 @@ h1 {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+/* ✅ Fix placeholder cho cả Light & Dark Mode */
 .ant-input::placeholder,
 .ant-input-password input::placeholder {
-  color: #aaa;
+  color: var(--placeholder-color) !important;
+  opacity: 1 !important;
 }
-
-/* Fix placeholder color in dark mode */
-[data-theme="dark"] input::placeholder {
-  color: rgba(200, 200, 200, 0.6) !important;
-}
-
-[data-theme="dark"] .ant-input-password input::placeholder {
-  color: rgba(200, 200, 200, 0.6) !important;
-}
-
-
-
 
 .ant-alert {
   border-radius: 8px;
