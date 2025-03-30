@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { Form, Input, Button, message, Skeleton } from "antd";
 import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 import "./ForgotPassword.css";
 
 const API_URL = "https://mindx-mockup-server.vercel.app/api/resources/users?apiKey=67c862208a17675d3d3d9313";
 
 const ForgotPasswordForm = () => {
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1); // Step 1: Nhập email/sdt, Step 2: Đổi mật khẩu
+  const [step, setStep] = useState(1);
   const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
 
   const validationSchemaStep1 = Yup.object().shape({
     identifier: Yup.string().required("Vui lòng nhập email hoặc số điện thoại"),
@@ -36,13 +38,13 @@ const ForgotPasswordForm = () => {
       );
 
       if (!user) {
-        message.error("Tài khoản không tồn tại!");
+        message.error("❌ Tài khoản không tồn tại!");
       } else {
         setUserData(user);
         setStep(2);
       }
     } catch (error) {
-      message.error("Lỗi khi kiểm tra tài khoản!");
+      message.error("⚠️ Lỗi khi kiểm tra tài khoản!");
     } finally {
       setLoading(false);
     }
@@ -51,15 +53,17 @@ const ForgotPasswordForm = () => {
   const handleResetPassword = async (values) => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_URL}/${userData.id}`, {
+      const patchURL = `${API_URL}?email=${userData.email}`;
+      const response = await fetch(patchURL, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password: values.password }),
       });
 
-      if (!response.ok) throw new Error("Lỗi khi đặt lại mật khẩu");
-      message.success("Mật khẩu đã được đặt lại thành công!");
-      setStep(1);
+      if (!response.ok) throw new Error("⚠️ Lỗi khi đặt lại mật khẩu");
+      message.success("✅ Mật khẩu đã được đặt lại thành công!");
+
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       message.error(error.message);
     } finally {
