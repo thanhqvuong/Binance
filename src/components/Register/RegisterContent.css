@@ -65,12 +65,11 @@ h1 {
   gap: 1rem;
 }
 
-/* Input */
-.ant-input,
-.ant-input-password {
+/* Input Styles */
+.ant-input, .ant-input-password {
   height: 45px;
   border-radius: 8px;
-  border: 1px solid var(--input-border);
+  border: 1px solid var(--input-border) !important;
   background: var(--input-bg) !important;
   color: var(--text-color) !important;
   transition: all 0.3s;
@@ -78,22 +77,26 @@ h1 {
   font-size: 1rem;
 }
 
-/* Fix lỗi input bị trắng khi focus/hover */
-.ant-input:focus,
-.ant-input-password:focus,
-.ant-input:hover,
-.ant-input-password:hover {
+/* Placeholder Styles */
+.ant-input::placeholder, .ant-input-password input::placeholder {
+  color: var(--placeholder-color) !important;
+  opacity: 1 !important;
+}
+
+/* Input Focus & Hover Fix */
+.ant-input:focus, .ant-input-password:focus,
+.ant-input:hover, .ant-input-password:hover {
   background: var(--input-bg) !important;
   color: var(--text-color) !important;
   border-color: #007bff !important;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;
 }
 
-/* Placeholder */
-.ant-input::placeholder,
-.ant-input-password input::placeholder {
-  color: var(--placeholder-color) !important;
-  opacity: 1 !important;
+/* Autofill Fix */
+.ant-input:-webkit-autofill, .ant-input-password:-webkit-autofill {
+  background: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
 }
 
 /* Nút Đăng ký */
@@ -106,6 +109,7 @@ h1 {
   font-weight: bold;
   transition: background 0.3s, transform 0.2s;
   cursor: pointer;
+  color: #fff;
 }
 
 .ant-btn-primary:hover {
