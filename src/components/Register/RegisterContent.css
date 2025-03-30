@@ -30,7 +30,7 @@
   --placeholder-color: var(--placeholder-dark);
 }
 
-/* Áp dụng theme toàn bộ trang */
+/* Apply theme to the entire page */
 body {
   background: var(--background) !important;
   color: var(--text-color) !important;
@@ -49,7 +49,7 @@ body {
   transition: background 0.3s ease-in-out;
 }
 
-/* Tiêu đề */
+/* Title */
 h1 {
   color: var(--text-color);
   font-size: 1.8rem;
@@ -83,13 +83,14 @@ h1 {
   opacity: 1 !important;
 }
 
-/* Input Focus & Hover Fix */
+/* Input Focus & Hover */
 .ant-input:focus, .ant-input-password:focus,
 .ant-input:hover, .ant-input-password:hover {
   background: var(--input-bg) !important;
   color: var(--text-color) !important;
   border-color: #007bff !important;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;
+  outline: none;
 }
 
 /* Autofill Fix */
@@ -99,7 +100,7 @@ h1 {
   -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
 }
 
-/* Nút Đăng ký */
+/* Register Button */
 .ant-btn-primary {
   height: 45px;
   border-radius: 8px;
@@ -120,6 +121,11 @@ h1 {
 .ant-btn-primary:active {
   background: #003366;
   transform: translateY(0);
+}
+
+.ant-btn-primary:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
 }
 
 /* Loading Progress Bar */
