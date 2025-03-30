@@ -53,9 +53,9 @@ const ForgotPasswordForm = () => {
   const handleResetPassword = async (values) => {
     setLoading(true);
     try {
-      // Gửi POST để tạo user mới với mật khẩu mới
-      const createResponse = await fetch(API_URL, {
-        method: "POST", // Gửi yêu cầu POST
+      // Bước 1: Gửi POST để tạo user mới với mật khẩu mới
+      const response = await fetch(API_URL, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           username: userData.username, // Giữ nguyên username
@@ -65,22 +65,25 @@ const ForgotPasswordForm = () => {
         }),
       });
 
-      if (!createResponse.ok) throw new Error("⚠️ Lỗi khi tạo tài khoản mới!");
+      if (!response.ok) throw new Error("⚠️ Lỗi khi đặt lại mật khẩu");
 
-      // Sau khi tạo thành công, xóa người dùng cũ
-      const deleteResponse = await fetch(`${API_URL}?email=${userData.email}`, {
-        method: "DELETE", // Gửi yêu cầu DELETE
+      // Bước 2: Sau khi tạo user mới thành công, gửi yêu cầu DELETE để xóa người dùng cũ
+      const deleteResponse = await fetch(`${API_URL}?email=${userData.email}&apiKey=67c862208a17675d3d3d9313`, {
+        method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });
 
-      if (!deleteResponse.ok) throw new Error("⚠️ Lỗi khi xóa tài khoản cũ!");
+      if (!deleteResponse.ok) {
+        // Nếu không thể xóa người dùng cũ, thông báo lỗi và không chuyển hướng
+        throw new Error("⚠️ Lỗi khi xóa tài khoản cũ!");
+      }
 
-      message.success("✅ Mật khẩu đã được đặt lại thành công!");
-
-      // Ngay lập tức chuyển hướng sang trang login
+      // Bước 3: Nếu xóa thành công, chuyển hướng đến trang login
+      message.success("✅ Mật khẩu đã được đặt lại thành công và tài khoản cũ đã bị xóa!");
       navigate("/login");
+
     } catch (error) {
-      message.error(error.message);
+      message.error(error.message);  // Hiển thị thông báo lỗi
     } finally {
       setLoading(false);
     }
