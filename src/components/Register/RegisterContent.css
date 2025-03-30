@@ -7,8 +7,6 @@
   --input-bg-light: #fff;
   --input-border-dark: #555;
   --input-border-light: #ccc;
-  --placeholder-dark: rgba(180, 180, 180, 0.7);
-  --placeholder-light: rgba(100, 100, 100, 0.7);
   --primary-gradient: linear-gradient(135deg, #007bff, #0056b3);
   --primary-gradient-hover: linear-gradient(135deg, #0056b3, #004080);
 }
@@ -19,7 +17,6 @@
   --text-color: var(--text-light);
   --input-bg: var(--input-bg-light);
   --input-border: var(--input-border-light);
-  --placeholder-color: var(--placeholder-light);
 }
 
 [data-theme="dark"] {
@@ -27,7 +24,6 @@
   --text-color: var(--text-dark);
   --input-bg: var(--input-bg-dark);
   --input-border: var(--input-border-dark);
-  --placeholder-color: var(--placeholder-dark);
 }
 
 /* Apply theme to the entire page */
@@ -66,38 +62,42 @@ h1 {
 }
 
 /* Input Styles */
-.ant-input, .ant-input-password {
+.ant-input,
+.ant-input-password {
   height: 45px;
   border-radius: 8px;
-  border: 1px solid var(--input-border) !important;
-  background: var(--input-bg) !important;
-  color: var(--text-color) !important;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-color);
   transition: all 0.3s;
   padding: 0.5rem;
   font-size: 1rem;
 }
 
 /* Placeholder Styles */
-.ant-input::placeholder, .ant-input-password input::placeholder {
-  color: var(--placeholder-color) !important;
-  opacity: 1 !important;
+.ant-input::placeholder,
+.ant-input-password input::placeholder {
+  color: #aaa;
 }
 
 /* Input Focus & Hover */
-.ant-input:focus, .ant-input-password:focus,
-.ant-input:hover, .ant-input-password:hover {
-  background: var(--input-bg) !important;
-  color: var(--text-color) !important;
-  border-color: #007bff !important;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;
+.ant-input:focus,
+.ant-input-password:focus,
+.ant-input:hover,
+.ant-input-password:hover {
+  background: var(--input-bg);
+  color: var(--text-color);
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   outline: none;
 }
 
 /* Autofill Fix */
-.ant-input:-webkit-autofill, .ant-input-password:-webkit-autofill {
-  background: var(--input-bg) !important;
-  color: var(--text-color) !important;
-  -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
+.ant-input:-webkit-autofill,
+.ant-input-password:-webkit-autofill {
+  background: var(--input-bg);
+  color: var(--text-color);
+  -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset;
 }
 
 /* Register Button */
