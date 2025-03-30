@@ -71,14 +71,15 @@ h1 {
 
 .ant-input::placeholder,
 .ant-input-password input::placeholder {
-  color: #777 !important;
+  color: #aaa;
 }
 
 /* Fix placeholder color in dark mode */
 [data-theme="dark"] .ant-input::placeholder,
 [data-theme="dark"] .ant-input-password input::placeholder {
-  color: rgba(200, 200, 200, 0.6); /* Màu xám nhạt, không quá sáng */
+  color: rgba(200, 200, 200, 0.6) !important;
 }
+
 
 
 .ant-alert {
