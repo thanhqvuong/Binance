@@ -75,7 +75,7 @@ const ForgotPasswordForm = () => {
 
       if (!deleteResponse.ok) {
         // Nếu không thể xóa người dùng cũ, thông báo lỗi và không chuyển hướng
-        throw new Error("⚠️ Lỗi khi xóa tài khoản cũ!");
+        throw new Error("⚠️ Lỗi khi xóa tài khoản cũ! Hãy xóa thủ công.");
       }
 
       // Bước 3: Nếu xóa thành công, chuyển hướng đến trang login
