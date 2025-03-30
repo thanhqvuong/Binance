@@ -163,9 +163,11 @@ button:hover {
   color: white;
 }
 /* ====== ALIGNING CHECKBOX AND LABEL ====== */
+/* ====== ALIGNING CHECKBOX AND LABEL ====== */
 .remember-me {
   display: flex;
   align-items: center;
+  margin-top: 10px;
 }
 
 .remember-me input[type="checkbox"] {
@@ -173,3 +175,9 @@ button:hover {
   width: 16px;
   height: 16px;
 }
+
+.remember-me label {
+  font-size: 14px;
+  margin: 0;
+}
+
