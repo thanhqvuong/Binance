@@ -26,14 +26,6 @@
   --input-border: var(--input-border-dark);
 }
 
-/* Apply theme to the entire page */
-body {
-  background: var(--background) !important;
-  color: var(--text-color) !important;
-  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-/* Container */
 .register-container {
   max-width: 400px;
   margin: auto;
@@ -45,7 +37,6 @@ body {
   transition: background 0.3s ease-in-out;
 }
 
-/* Title */
 h1 {
   color: var(--text-color);
   font-size: 1.8rem;
@@ -54,14 +45,12 @@ h1 {
   transition: color 0.3s ease-in-out;
 }
 
-/* Form */
 .register-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-/* Input Styles */
 .ant-input,
 .ant-input-password {
   height: 45px;
@@ -74,33 +63,24 @@ h1 {
   font-size: 1rem;
 }
 
-/* Placeholder Styles */
+.ant-input:focus,
+.ant-input-password:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
 .ant-input::placeholder,
 .ant-input-password input::placeholder {
   color: #aaa;
 }
 
-/* Input Focus & Hover */
-.ant-input:focus,
-.ant-input-password:focus,
-.ant-input:hover,
-.ant-input-password:hover {
-  background: var(--input-bg);
-  color: var(--text-color);
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  outline: none;
+.ant-alert {
+  border-radius: 8px;
+  font-size: 0.9rem;
+  padding: 10px;
+  text-align: left;
 }
 
-/* Autofill Fix */
-.ant-input:-webkit-autofill,
-.ant-input-password:-webkit-autofill {
-  background: var(--input-bg);
-  color: var(--text-color);
-  -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset;
-}
-
-/* Register Button */
 .ant-btn-primary {
   height: 45px;
   border-radius: 8px;
@@ -110,7 +90,6 @@ h1 {
   font-weight: bold;
   transition: background 0.3s, transform 0.2s;
   cursor: pointer;
-  color: #fff;
 }
 
 .ant-btn-primary:hover {
@@ -121,11 +100,6 @@ h1 {
 .ant-btn-primary:active {
   background: #003366;
   transform: translateY(0);
-}
-
-.ant-btn-primary:focus {
-  outline: 2px solid #007bff;
-  outline-offset: 2px;
 }
 
 /* Loading Progress Bar */
