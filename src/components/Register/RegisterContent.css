@@ -71,7 +71,7 @@ h1 {
 
 .ant-input::placeholder,
 .ant-input-password input::placeholder {
-  color: #aaa;
+  color: #777 !important;
 }
 
 /* Fix placeholder color in dark mode */
