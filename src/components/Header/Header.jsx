@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import Link để điều hướng giữa các trang
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../../store/Theme"; // Import custom hook để quản lý theme (Light/Dark mode)
 import "./Header.css"; // Import file CSS cho Header
 
@@ -39,8 +39,26 @@ const Header = () => {
 
   // ✅ Xử lý đăng xuất
   const handleLogout = () => {
-    setUser(null); // Xóa user khỏi state
-    navigate("/login"); // Điều hướng về trang đăng nhập
+    // Lưu lại lịch sử đăng nhập trong localStorage hoặc sessionStorage
+    const loginHistory = JSON.parse(localStorage.getItem("loginHistory")) || [];
+
+    // Thêm thông tin đăng xuất vào lịch sử (có thể là thời gian và tên người dùng)
+    const logoutInfo = {
+      username: user.username, // Thêm username vào lịch sử
+      time: new Date().toISOString(), // Lưu thời gian đăng xuất
+      action: "logout", // Đánh dấu hành động là "logout"
+    };
+
+    loginHistory.push(logoutInfo);
+    localStorage.setItem("loginHistory", JSON.stringify(loginHistory)); // Lưu lại vào localStorage
+
+    // Xóa user khỏi state
+    setUser(null); 
+    sessionStorage.removeItem("user"); // Xóa thông tin user trong sessionStorage
+    localStorage.removeItem("user"); // Xóa thông tin user trong localStorage
+
+    // Điều hướng về trang đăng nhập
+    navigate("/login");
   };
 
   return (
