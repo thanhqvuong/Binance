@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Button, message, Skeleton } from "antd";
+import { Form, Input, Button, Skeleton } from "antd";
 import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ const ForgotPasswordForm = () => {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [userData, setUserData] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");  // Trạng thái lỗi
   const navigate = useNavigate();
 
   const validationSchemaStep1 = Yup.object().shape({
@@ -30,6 +31,8 @@ const ForgotPasswordForm = () => {
 
   const handleCheckAccount = async (values) => {
     setLoading(true);
+    setErrorMessage("");  // Reset lỗi khi bắt đầu kiểm tra tài khoản
+
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
@@ -43,17 +46,15 @@ const ForgotPasswordForm = () => {
       );
 
       if (!user) {
-        // Nếu không tìm thấy tài khoản, hiển thị thông báo lỗi và không chuyển sang bước 2
-        message.error("❌ Tài khoản không tồn tại!");  // Hiển thị thông báo lỗi
-        setStep(1); // Giữ lại ở bước 1, không chuyển sang bước 2
+        // Nếu không tìm thấy tài khoản, hiển thị thông báo lỗi trong giao diện
+        setErrorMessage("❌ Tài khoản không tồn tại!"); // Set thông báo lỗi
+        return; // Ngừng thực hiện và không chuyển sang bước 2
       } else {
         setUserData(user);
         setStep(2); // Nếu tìm thấy tài khoản, chuyển qua bước 2
       }
     } catch (error) {
-      // Nếu có lỗi xảy ra, hiển thị thông báo lỗi và giữ lại ở bước 1
-      message.error(error.message || "⚠️ Lỗi khi kiểm tra tài khoản!");  // Hiển thị thông báo lỗi
-      setStep(1);
+      setErrorMessage(error.message || "⚠️ Lỗi khi kiểm tra tài khoản!");  // Hiển thị thông báo lỗi trong giao diện
     } finally {
       setLoading(false);
     }
@@ -96,6 +97,9 @@ const ForgotPasswordForm = () => {
                 <Field name="identifier" as={Input} />
                 <ErrorMessage name="identifier" component="div" className="error-message" />
               </Form.Item>
+
+              {/* Hiển thị lỗi nếu có */}
+              {errorMessage && <div className="error-message">{errorMessage}</div>} 
 
               {loading ? <Skeleton.Button active size="large" block /> : (
                 <Button type="primary" htmlType="submit">Kiểm tra tài khoản</Button>
