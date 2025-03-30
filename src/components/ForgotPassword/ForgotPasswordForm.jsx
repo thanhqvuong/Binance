@@ -89,6 +89,7 @@ const ForgotPasswordForm = () => {
 
   return (
     <div className="forgot-password-container">
+      <h1>Quên Mật Khẩu</h1>
       {step === 1 ? (
         <Formik initialValues={{ identifier: "" }} validationSchema={validationSchemaStep1} onSubmit={handleCheckAccount}>
           {({ handleSubmit }) => (
