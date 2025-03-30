@@ -67,20 +67,9 @@ const ForgotPasswordForm = () => {
 
       if (!response.ok) throw new Error("⚠️ Lỗi khi đặt lại mật khẩu");
 
-      // Bước 2: Sau khi tạo user mới thành công, gửi yêu cầu DELETE để xóa người dùng cũ
-      const deleteResponse = await fetch(`${API_URL}?email=${userData.email}&apiKey=67c862208a17675d3d3d9313`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!deleteResponse.ok) {
-        // Nếu không thể xóa người dùng cũ, thông báo lỗi và không chuyển hướng
-        throw new Error("⚠️ Lỗi khi xóa tài khoản cũ! Hãy xóa thủ công.");
-      }
-
-      // Bước 3: Nếu xóa thành công, chuyển hướng đến trang login
-      message.success("✅ Mật khẩu đã được đặt lại thành công và tài khoản cũ đã bị xóa!");
-      navigate("/login");
+      // Bước 3: Chuyển hướng đến trang login sau khi tạo tài khoản mới thành công
+      message.success("✅ Mật khẩu đã được đặt lại thành công!");
+      navigate("/login");  // Chuyển hướng đến trang login
 
     } catch (error) {
       message.error(error.message);  // Hiển thị thông báo lỗi
