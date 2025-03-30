@@ -54,8 +54,8 @@ const ForgotPasswordForm = () => {
     setLoading(true);
     try {
       // Gửi POST để tạo user mới với mật khẩu mới
-      const response = await fetch(API_URL, {
-        method: "POST",
+      const createResponse = await fetch(API_URL, {
+        method: "POST", // Gửi yêu cầu POST
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           username: userData.username, // Giữ nguyên username
@@ -65,7 +65,16 @@ const ForgotPasswordForm = () => {
         }),
       });
 
-      if (!response.ok) throw new Error("⚠️ Lỗi khi đặt lại mật khẩu");
+      if (!createResponse.ok) throw new Error("⚠️ Lỗi khi tạo tài khoản mới!");
+
+      // Sau khi tạo thành công, xóa người dùng cũ
+      const deleteResponse = await fetch(`${API_URL}?email=${userData.email}`, {
+        method: "DELETE", // Gửi yêu cầu DELETE
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!deleteResponse.ok) throw new Error("⚠️ Lỗi khi xóa tài khoản cũ!");
+
       message.success("✅ Mật khẩu đã được đặt lại thành công!");
 
       // Ngay lập tức chuyển hướng sang trang login
