@@ -7,8 +7,8 @@
   --input-bg-light: #fff;
   --input-border-dark: #555;
   --input-border-light: #ccc;
-  --placeholder-dark: rgba(180, 180, 180, 0.7); /* Xám nhạt */
-  --placeholder-light: rgba(100, 100, 100, 0.7); /* Xám đậm */
+  --placeholder-dark: rgba(180, 180, 180, 0.7);
+  --placeholder-light: rgba(100, 100, 100, 0.7);
   --primary-gradient: linear-gradient(135deg, #007bff, #0056b3);
   --primary-gradient-hover: linear-gradient(135deg, #0056b3, #004080);
 }
@@ -30,10 +30,10 @@
   --placeholder-color: var(--placeholder-dark);
 }
 
-/* Body */
+/* Áp dụng theme toàn bộ trang */
 body {
-  background: var(--background);
-  color: var(--text-color);
+  background: var(--background) !important;
+  color: var(--text-color) !important;
   transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
@@ -71,8 +71,8 @@ h1 {
   height: 45px;
   border-radius: 8px;
   border: 1px solid var(--input-border);
-  background: var(--input-bg);
-  color: var(--text-color);
+  background: var(--input-bg) !important;
+  color: var(--text-color) !important;
   transition: all 0.3s;
   padding: 0.5rem;
   font-size: 1rem;
@@ -91,37 +91,9 @@ h1 {
 
 /* Placeholder */
 .ant-input::placeholder,
-.ant-input-password::placeholder {
+.ant-input-password input::placeholder {
   color: var(--placeholder-color) !important;
   opacity: 1 !important;
-}
-
-/* Fix riêng cho Dark Mode */
-[data-theme="dark"] .ant-input,
-[data-theme="dark"] .ant-input-password {
-  background: var(--input-bg-dark) !important;
-  color: var(--text-dark) !important;
-  border: 1px solid var(--input-border-dark) !important;
-}
-
-[data-theme="dark"] .ant-input:focus,
-[data-theme="dark"] .ant-input-password:focus {
-  background: var(--input-bg-dark) !important;
-  border-color: #007bff !important;
-}
-
-/* Fix riêng cho Light Mode */
-[data-theme="light"] .ant-input,
-[data-theme="light"] .ant-input-password {
-  background: var(--input-bg-light) !important;
-  color: var(--text-light) !important;
-  border: 1px solid var(--input-border-light) !important;
-}
-
-[data-theme="light"] .ant-input:focus,
-[data-theme="light"] .ant-input-password:focus {
-  background: var(--input-bg-light) !important;
-  border-color: #007bff !important;
 }
 
 /* Nút Đăng ký */
